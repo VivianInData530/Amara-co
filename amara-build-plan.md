@@ -43,7 +43,7 @@ The cart drawer JS listens for `submit` on `[data-add-to-cart-form]`. Step 16's 
 **Admin/CLI setup:**
 - [ ] Create a GitHub repository for your theme (public or private)
 - [ ] Locally: `git clone [your-repo] amara-co-theme` → `cd amara-co-theme`
-- [ ] Run: `npx shopify theme init --path .` — scaffolds a new theme with canonical structure into your current folder
+- [ ] Run: `npm shopify theme init --path .` — scaffolds a new theme with canonical structure into your current folder
 - [ ] Verify: `ls -la` shows `config/`, `layout/`, `sections/`, `snippets/`, `templates/`, `assets/`, `locales/`
 - [ ] Commit: `git add . && git commit -m "chore: scaffold theme from Shopify CLI"`
 
