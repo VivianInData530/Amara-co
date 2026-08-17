@@ -4,6 +4,8 @@
 > Two corrections from Claude are marked below with ⚠️ — apply these by hand when you reach that step, since they weren't fixed in the original Copilot output.
 
 ---
+git add sections/category-grid.liquid 
+git commit -m "feat: category grid with hover zoom and staggered scroll-in
 
 ## Complete Build Recap (time estimates)
 
