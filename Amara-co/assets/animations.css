@@ -1,0 +1,10 @@
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-trigger.animate--fade-in { opacity: 0; }
+  .scroll-trigger:not(.scroll-trigger--offscreen).animate--fade-in {
+    animation: fadeIn var(--duration-default) ease forwards;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(1rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}

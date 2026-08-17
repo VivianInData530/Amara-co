@@ -1,0 +1,26 @@
+{% style %}
+  .announcement-bar {
+    background-color: var(--color-text);
+    color: var(--color-bg);
+    padding: 0.75rem 1rem;
+    text-align: center;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+  }
+{% endstyle %}
+
+{% if section.settings.enabled %}
+<div class="announcement-bar">
+  {{ section.settings.text }}
+</div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "settings": [
+    { "type": "checkbox", "id": "enabled", "label": "Enable", "default": true },
+    { "type": "text", "id": "text", "label": "Text", "default": "Free shipping on orders over $100" }
+  ]
+}
+{% endschema %}

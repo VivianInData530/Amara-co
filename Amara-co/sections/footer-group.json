@@ -10,6 +10,13 @@
 {
   "type": "footer",
   "name": "t:general.footer",
-  "sections": {},
-  "order": []
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {}
+    }
+  },
+  "order": [
+    "footer"
+  ]
 }
