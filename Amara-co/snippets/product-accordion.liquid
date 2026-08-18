@@ -1,0 +1,33 @@
+<div class="product-accordion">
+  <details class="product-accordion__item" open>
+    <summary class="product-accordion__summary">Description</summary>
+    <div class="product-accordion__content">{{ product.description }}</div>
+  </details>
+
+  <details class="product-accordion__item">
+    <summary class="product-accordion__summary">Specs</summary>
+    <div class="product-accordion__content">
+      <table class="specs-table">
+        <tr><td>Material</td><td>{{ product.metafields.jewelry.material }}</td></tr>
+        <tr><td>Stone</td><td>{{ product.metafields.jewelry.stone }}</td></tr>
+        <tr><td>Weight</td><td>{{ product.metafields.jewelry.weight }}</td></tr>
+      </table>
+    </div>
+  </details>
+
+  <details class="product-accordion__item">
+    <summary class="product-accordion__summary">Care</summary>
+    <div class="product-accordion__content">{{ product.metafields.jewelry.care_instructions }}</div>
+  </details>
+</div>
+
+{% style %}
+  .product-accordion__item { border-bottom: 1px solid var(--color-muted); padding: 1rem 0; }
+  .product-accordion__summary { font-weight: 600; cursor: pointer; user-select: none; font-family: var(--font-serif); font-size: 1.125rem; }
+  .product-accordion__summary:hover { color: var(--color-primary); }
+  .product-accordion__content { padding-top: 1rem; color: var(--color-muted); line-height: 1.6; }
+  .specs-table { width: 100%; border-collapse: collapse; }
+  .specs-table tr { border-bottom: 1px solid #f0f0f0; }
+  .specs-table td { padding: 0.5rem 0; }
+  .specs-table td:first-child { font-weight: 600; width: 30%; }
+{% endstyle %}
