@@ -27,15 +27,14 @@
     background: linear-gradient(
       to bottom,
       transparent 0%,
-      rgba(43, 36, 30, 0.15) 45%,
-      rgba(43, 36, 30, 0.5) 100%
+      rgba(43, 36, 30, 0.25) 40%,
+      rgba(43, 36, 30, 0.75) 100%
     );
   }
 
   .hero__content {
     width: min(100%, 640px);
     padding: clamp(2rem, 6vw, 5rem);
-    color: var(--color-text);
     animation: hero-slide-up 200ms ease both;
     animation-timeline: view();
     animation-range: entry 0% cover 25%;
@@ -43,34 +42,37 @@
 
   .hero__eyebrow {
     margin: 0 0 0.75rem;
-    color: var(--color-bg);
+    color: #ffffffc5;
     font-family: Inter, sans-serif;
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.14em;
     line-height: 1.4;
     text-transform: uppercase;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
   }
 
   .hero__headline {
     max-width: 12ch;
     margin: 0 0 1rem;
-    color: var(--color-bg);
+    color: #ffffffc5;
     font-family: Fraunces, Georgia, serif;
     font-size: clamp(2.6rem, 6vw, 4.6rem);
     font-weight: 400;
     letter-spacing: -0.02em;
     line-height: 1.02;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
   }
 
   .hero__description {
     max-width: 26rem;
     margin: 0 0 1.5rem;
-    color: var(--color-bg);
+    color: #ffffffc5;
     font-family: Inter, sans-serif;
     font-size: 1rem;
     line-height: 1.6;
-    opacity: 0.9;
+    opacity: 0.95;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
   }
 
   .hero__buttons {
@@ -101,14 +103,14 @@
 
   .hero .button--primary {
     color: var(--color-text);
-    background: var(--color-bg);
-    border: 1px solid var(--color-bg);
+    background: #FFFFFF;
+    border: 1px solid #FFFFFF;
   }
 
   .hero .button--secondary {
-    color: var(--color-bg);
+    color: #ffffffc5;
     background: transparent;
-    border: 1px solid rgba(250, 246, 241, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.7);
   }
 
   @keyframes hero-slide-up {

@@ -1,0 +1,122 @@
+{% style %}
+  .upcoming-teaser {
+    position: relative;
+  }
+
+  .upcoming-teaser__container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    max-width: 700px;
+    margin: 3rem auto;
+    padding: 4rem 2rem;
+    text-align: center;
+    background-color: #2B241E;
+  }
+
+  .upcoming-teaser__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .upcoming-teaser__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .upcoming-teaser__bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(43, 36, 30, 0.75);
+  }
+
+  .upcoming-teaser__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .upcoming-teaser__eyebrow {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+    color: #C9A87C;
+    font-weight: 600;
+  }
+
+  .upcoming-teaser__heading {
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 400;
+    margin-bottom: 1rem;
+    color: #ffffffc5;
+  }
+
+  .upcoming-teaser__description {
+    margin-bottom: 1.75rem;
+    font-family: var(--font-body);
+    color: #ffffffc5;
+    opacity: 0.9;
+  }
+
+  .upcoming-teaser .button--outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid rgba(250, 246, 241, 0.8);
+    border-radius: 100px;
+    color: #ffffffc5;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.25s ease;
+  }
+
+  .upcoming-teaser .button--outline:hover {
+    transform: translateY(-2px);
+  }
+{% endstyle %}
+
+<section class="upcoming-teaser scroll-trigger animate--scale-in">
+  <div class="upcoming-teaser__container">
+    {% if section.settings.background_image %}
+      <div class="upcoming-teaser__bg">
+       <img
+  src="{{ section.settings.background_image | image_url: width: 1400 }}"
+  alt=""
+  width="{{ section.settings.background_image.width }}"
+  height="{{ section.settings.background_image.height }}"
+>
+      </div>
+    {% endif %}
+    <div class="upcoming-teaser__content">
+      <p class="upcoming-teaser__eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2 class="upcoming-teaser__heading">{{ section.settings.heading }}</h2>
+      <p class="upcoming-teaser__description">{{ section.settings.description }}</p>
+      <a href="{{ section.settings.link }}" class="button--outline">{{ section.settings.button_text }}</a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Upcoming teaser",
+  "settings": [
+    { "type": "image_picker", "id": "background_image", "label": "Background image" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow text", "default": "Coming next season" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Watches, reimagined in warm metals." },
+    { "type": "textarea", "id": "description", "label": "Description", "default": "Be the first to know when the Amara Watch Edit launches. Join the list below." },
+    { "type": "text", "id": "button_text", "label": "Button text", "default": "Notify me" },
+    { "type": "url", "id": "link", "label": "Button link" }
+  ],
+  "presets": [
+    { "name": "Upcoming teaser" }
+  ]
+}
+{% endschema %}
