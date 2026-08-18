@@ -1,0 +1,121 @@
+{% comment %}
+  Renders a product card with image, title, price, and quick-add button.
+  Usage: {% render 'card-product', card_product: product %}
+{% endcomment %}
+
+<div class="card-product">
+  <a href="{{ card_product.url }}" class="card-product__image-link">
+    <div class="card-product__image-container">
+      <img
+        srcset="
+          {{ card_product.featured_image | image_url: width: 200 }} 200w,
+          {{ card_product.featured_image | image_url: width: 400 }} 400w,
+          {{ card_product.featured_image | image_url: width: 600 }} 600w
+        "
+        sizes="(min-width: 1200px) 25vw, (min-width: 750px) 50vw, 100vw"
+        src="{{ card_product.featured_image | image_url: width: 400 }}"
+        alt="{{ card_product.featured_image.alt | escape }}"
+        width="{{ card_product.featured_image.width }}"
+        height="{{ card_product.featured_image.height }}"
+        loading="lazy"
+        class="card-product__image"
+      >
+    </div>
+  </a>
+
+  <div class="card-product__content">
+    <h3 class="card-product__title"><a href="{{ card_product.url }}">{{ card_product.title }}</a></h3>
+    <div class="card-product__price">
+      {% if card_product.price_varies %}
+        from {{ card_product.price_min | money }}
+      {% else %}
+        {{ card_product.price | money }}
+      {% endif %}
+    </div>
+    <form method="post" action="/cart/add" class="card-product__form" data-add-to-cart-form>
+      <input type="hidden" name="id" value="{{ card_product.first_available_variant.id }}">
+      <button type="submit" class="card-product__add-to-cart button button--secondary" {% if card_product.available == false %}disabled{% endif %}>
+        {% if card_product.available %}Add to cart{% else %}Sold out{% endif %}
+      </button>
+    </form>
+  </div>
+</div>
+
+{% style %}
+  .card-product {
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+
+  .card-product:hover {
+    transform: translateY(-4px);
+  }
+
+  .card-product__image-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 16px;
+    background-color: var(--color-secondary);
+  }
+
+  .card-product__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .card-product:hover .card-product__image {
+    transform: scale(1.06);
+  }
+
+  .card-product__content {
+    padding: 1rem 0 0;
+  }
+
+  .card-product__title {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 1rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .card-product__title a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .card-product__title a:hover {
+    color: var(--color-primary);
+  }
+
+  .card-product__add-to-cart {
+    width: 100%;
+    margin-top: 0.85rem;
+    padding: 0.65rem 1rem;
+    border-radius: 100px;
+    border: 1px solid var(--color-text);
+    background: transparent;
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .card-product__add-to-cart:hover:not(:disabled) {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .card-product__add-to-cart:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+{% endstyle %}

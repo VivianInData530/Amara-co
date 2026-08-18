@@ -5,7 +5,7 @@
 
 ---
 git add sections/category-grid.liquid 
-git commit -m "feat: 3-panel lifestyle banner with hover zoom and staggered scroll-in
+git commit -m "feat: feat: upcoming teaser with dark block and scale-in animation"
 
 ## Complete Build Recap (time estimates)
 

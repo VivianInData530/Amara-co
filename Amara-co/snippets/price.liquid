@@ -1,0 +1,12 @@
+{% comment %} Usage: {% render 'price', product: product %} {% endcomment %}
+<div class="price">
+  {% if product.compare_at_price %}
+    <span class="price__regular" style="text-decoration: line-through; color: var(--color-muted);">{{ product.compare_at_price | money }}</span>
+    <span class="price__sale" style="color: var(--color-primary); font-weight: 600;">{{ product.price | money }}</span>
+  {% else %}
+    <span class="price__regular">{{ product.price | money }}</span>
+  {% endif %}
+</div>
+{% style %}
+  .price { display: flex; gap: 0.5rem; font-size: 0.9rem; }
+{% endstyle %}

@@ -1,10 +1,1268 @@
 {% comment %}
-  Blank collection template placeholder.
+  Amara & Co. — Collection Page
+
+  Includes:
+  - Responsive collection hero
+  - Collection description
+  - Product count
+  - Modern sorting
+  - Responsive product grid
+  - Shared card-product snippet
+  - Shopify pagination
+  - Scroll-reveal animation
+  - Empty collection state
 {% endcomment %}
 
+
+<div class="collection-page">
+
+
+  {% comment %}
+    ========================================
+    COLLECTION HERO
+    ========================================
+  {% endcomment %}
+
+  {% if collection.image %}
+
+    <section class="collection-hero">
+
+      <div class="collection-hero__image">
+
+        <img
+          srcset="
+            {{ collection.image | image_url: width: 600 }} 600w,
+            {{ collection.image | image_url: width: 1000 }} 1000w,
+            {{ collection.image | image_url: width: 1400 }} 1400w,
+            {{ collection.image | image_url: width: 1800 }} 1800w
+          "
+          sizes="100vw"
+          src="{{ collection.image | image_url: width: 1400 }}"
+          alt="{{ collection.title }}"
+          width="{{ collection.image.width }}"
+          height="{{ collection.image.height }}"
+          loading="eager"
+        >
+
+      </div>
+
+      <div class="collection-hero__overlay"></div>
+
+      <div class="collection-hero__content scroll-trigger animate--fade-in">
+
+        <p class="collection-hero__eyebrow">
+          Amara & Co.
+        </p>
+
+        <h1 class="collection-hero__title">
+          {{ collection.title }}
+        </h1>
+
+      </div>
+
+    </section>
+
+
+  {% else %}
+
+
+    <section class="collection-hero collection-hero--simple">
+
+      <div class="collection-hero__content scroll-trigger animate--fade-in">
+
+        <p class="collection-hero__eyebrow">
+          Amara & Co.
+        </p>
+
+        <h1 class="collection-hero__title">
+          {{ collection.title }}
+        </h1>
+
+      </div>
+
+    </section>
+
+  {% endif %}
+
+
+
+  <div class="collection-page__container">
+
+
+    {% comment %}
+      ========================================
+      COLLECTION DESCRIPTION
+      ========================================
+    {% endcomment %}
+
+    {% if collection.description != blank %}
+
+      <div class="collection-intro scroll-trigger animate--fade-in">
+
+        <p class="collection-intro__description">
+          {{ collection.description }}
+        </p>
+
+      </div>
+
+    {% endif %}
+
+
+
+    {% comment %}
+      ========================================
+      PRODUCTS + PAGINATION
+      ========================================
+    {% endcomment %}
+
+    {% paginate collection.products by 12 %}
+
+
+      {% comment %}
+        ========================================
+        TOOLBAR
+        ========================================
+      {% endcomment %}
+
+      <div class="collection-toolbar">
+
+
+        <div class="collection-toolbar__count">
+
+          <span>
+            {{ collection.products_count }}
+
+            {% if collection.products_count == 1 %}
+              piece
+            {% else %}
+              pieces
+            {% endif %}
+          </span>
+
+        </div>
+
+
+        <div class="collection-toolbar__sort">
+
+          <label
+            for="collection-sort"
+            class="collection-toolbar__label"
+          >
+            Sort by
+          </label>
+
+
+          <div class="collection-toolbar__select-wrap">
+
+            <select
+              id="collection-sort"
+              class="collection-toolbar__select"
+              name="sort_by"
+              onchange="window.location.href = this.value;"
+            >
+
+              <option
+                value="{{ collection.url }}?sort_by=manual"
+                {% if collection.sort_by == 'manual' or collection.sort_by == blank %}
+                  selected
+                {% endif %}
+              >
+                Featured
+              </option>
+
+
+              <option
+                value="{{ collection.url }}?sort_by=price-ascending"
+                {% if collection.sort_by == 'price-ascending' %}
+                  selected
+                {% endif %}
+              >
+                Price: Low to High
+              </option>
+
+
+              <option
+                value="{{ collection.url }}?sort_by=price-descending"
+                {% if collection.sort_by == 'price-descending' %}
+                  selected
+                {% endif %}
+              >
+                Price: High to Low
+              </option>
+
+
+              <option
+                value="{{ collection.url }}?sort_by=title-ascending"
+                {% if collection.sort_by == 'title-ascending' %}
+                  selected
+                {% endif %}
+              >
+                Name: A to Z
+              </option>
+
+
+              <option
+                value="{{ collection.url }}?sort_by=created-descending"
+                {% if collection.sort_by == 'created-descending' %}
+                  selected
+                {% endif %}
+              >
+                Newest
+              </option>
+
+            </select>
+
+
+            <span
+              class="collection-toolbar__chevron"
+              aria-hidden="true"
+            >
+              ↓
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      {% comment %}
+        ========================================
+        PRODUCT GRID
+        ========================================
+      {% endcomment %}
+
+      <div class="collection-grid">
+
+
+        {% if collection.products_count > 0 %}
+
+
+          {% for product in collection.products %}
+
+            <div
+              class="collection-grid__item scroll-trigger animate--fade-in"
+              style="--animation-order: {{ forloop.index0 }};"
+            >
+
+              {% render 'card-product',
+                card_product: product
+              %}
+
+            </div>
+
+          {% endfor %}
+
+
+        {% else %}
+
+
+          <div class="collection-empty">
+
+            <div
+              class="collection-empty__icon"
+              aria-hidden="true"
+            >
+              ◇
+            </div>
+
+
+            <h2 class="collection-empty__title">
+              Nothing here yet
+            </h2>
+
+
+            <p class="collection-empty__text">
+              We are curating something special.
+              Check back soon.
+            </p>
+
+
+            <a
+              href="{{ routes.root_url }}"
+              class="collection-empty__button"
+            >
+              Continue shopping
+            </a>
+
+          </div>
+
+
+        {% endif %}
+
+      </div>
+
+
+
+      {% comment %}
+        ========================================
+        PAGINATION
+        ========================================
+      {% endcomment %}
+
+      {% if paginate.pages > 1 %}
+
+
+        <nav
+          class="collection-pagination"
+          role="navigation"
+          aria-label="Collection pagination"
+        >
+
+
+          {% if paginate.previous %}
+
+            <a
+              href="{{ paginate.previous.url }}"
+              class="collection-pagination__arrow"
+              aria-label="Previous page"
+            >
+
+              <span aria-hidden="true">
+                ←
+              </span>
+
+              <span>
+                Previous
+              </span>
+
+            </a>
+
+          {% endif %}
+
+
+
+          <div class="collection-pagination__pages">
+
+
+            {% for part in paginate.parts %}
+
+
+              {% if part.is_link %}
+
+                <a
+                  href="{{ part.url }}"
+                  class="collection-pagination__page"
+                  aria-label="Page {{ part.title }}"
+                >
+                  {{ part.title }}
+                </a>
+
+
+              {% else %}
+
+                <span
+                  class="
+                    collection-pagination__page
+                    collection-pagination__page--current
+                  "
+                  aria-current="page"
+                >
+                  {{ part.title }}
+                </span>
+
+              {% endif %}
+
+
+            {% endfor %}
+
+          </div>
+
+
+
+          {% if paginate.next %}
+
+            <a
+              href="{{ paginate.next.url }}"
+              class="collection-pagination__arrow"
+              aria-label="Next page"
+            >
+
+              <span>
+                Next
+              </span>
+
+              <span aria-hidden="true">
+                →
+              </span>
+
+            </a>
+
+          {% endif %}
+
+
+        </nav>
+
+      {% endif %}
+
+
+    {% endpaginate %}
+
+
+  </div>
+
+</div>
+
+
+
+{% style %}
+
+
+/* =========================================================
+   COLLECTION PAGE
+   ========================================================= */
+
+.collection-page {
+  width: 100%;
+  background: var(--color-bg);
+}
+
+
+/* =========================================================
+   COLLECTION HERO
+   ========================================================= */
+
+.collection-hero {
+  position: relative;
+  min-height: clamp(300px, 48vw, 620px);
+
+  display: flex;
+  align-items: flex-end;
+
+  overflow: hidden;
+
+  isolation: isolate;
+}
+
+
+.collection-hero__image {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+
+
+.collection-hero__image img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+  object-position: center;
+}
+
+
+.collection-hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(43, 36, 30, 0.78) 0%,
+      rgba(43, 36, 30, 0.28) 45%,
+      rgba(43, 36, 30, 0.02) 100%
+    );
+}
+
+
+.collection-hero__content {
+  width: 100%;
+  max-width: 1440px;
+
+  margin: 0 auto;
+
+  padding:
+    clamp(2rem, 6vw, 5rem);
+}
+
+
+.collection-hero__eyebrow {
+  margin: 0 0 0.75rem;
+
+  color: var(--color-secondary);
+
+  font-size: 0.72rem;
+  font-weight: 600;
+
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+
+.collection-hero__title {
+  max-width: 850px;
+
+  margin: 0;
+
+  color: white;
+
+  font-family: var(--font-serif);
+
+  font-size:
+    clamp(3rem, 8vw, 6.5rem);
+
+  font-weight: 400;
+
+  letter-spacing: -0.055em;
+  line-height: 0.92;
+
+  text-wrap: balance;
+}
+
+
+
+/* =========================================================
+   SIMPLE HERO — COLLECTION WITHOUT IMAGE
+   ========================================================= */
+
+.collection-hero--simple {
+  min-height: 300px;
+
+  align-items: center;
+
+  background:
+    radial-gradient(
+      circle at 50% 10%,
+      rgba(201, 168, 124, 0.16),
+      transparent 50%
+    ),
+    var(--color-bg);
+}
+
+
+.collection-hero--simple .collection-hero__title {
+  color: var(--color-text);
+}
+
+
+
+/* =========================================================
+   PAGE CONTAINER
+   ========================================================= */
+
+.collection-page__container {
+  width: min(100% - 2rem, 1320px);
+
+  margin: 0 auto;
+}
+
+
+
+/* =========================================================
+   COLLECTION INTRO
+   ========================================================= */
+
+.collection-intro {
+  max-width: 720px;
+
+  margin:
+    clamp(2.5rem, 6vw, 5rem)
+    auto;
+
+  text-align: center;
+}
+
+
+.collection-intro__description {
+  margin: 0;
+
+  color: var(--color-muted);
+
+  font-size:
+    clamp(0.95rem, 1.2vw, 1.05rem);
+
+  line-height: 1.8;
+}
+
+
+
+/* =========================================================
+   COLLECTION TOOLBAR
+   ========================================================= */
+
+.collection-toolbar {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 1.5rem;
+
+  margin-bottom: 2rem;
+
+  padding-bottom: 1.25rem;
+
+  border-bottom:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--color-text) 10%,
+      transparent
+    );
+}
+
+
+.collection-toolbar__count {
+  color: var(--color-muted);
+
+  font-size: 0.8rem;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+}
+
+
+.collection-toolbar__sort {
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.75rem;
+}
+
+
+.collection-toolbar__label {
+  color: var(--color-muted);
+
+  font-size: 0.8rem;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+}
+
+
+.collection-toolbar__select-wrap {
+  position: relative;
+}
+
+
+.collection-toolbar__select {
+  min-width: 205px;
+
+  appearance: none;
+
+  padding:
+    0.75rem
+    2.6rem
+    0.75rem
+    1rem;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--color-text) 18%,
+      transparent
+    );
+
+  border-radius: 999px;
+
+  background: var(--color-bg);
+
+  color: var(--color-text);
+
+  cursor: pointer;
+
+  font: inherit;
+
+  font-size: 0.85rem;
+
+  transition:
+    border-color var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
+}
+
+
+.collection-toolbar__select:hover {
+  border-color: var(--color-text);
+}
+
+
+.collection-toolbar__select:focus-visible {
+  outline:
+    2px solid
+    var(--color-primary);
+
+  outline-offset: 3px;
+}
+
+
+.collection-toolbar__chevron {
+  position: absolute;
+
+  top: 50%;
+  right: 1rem;
+
+  pointer-events: none;
+
+  transform: translateY(-50%);
+
+  color: var(--color-muted);
+
+  font-size: 0.8rem;
+}
+
+
+
+/* =========================================================
+   PRODUCT GRID
+   ========================================================= */
+
+.collection-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap:
+    clamp(2rem, 3vw, 3.5rem)
+    clamp(1rem, 2vw, 2rem);
+
+  margin-bottom: 4rem;
+}
+
+
+.collection-grid__item {
+  min-width: 0;
+}
+
+
+
+/* =========================================================
+   PRODUCT CARD / ADD TO CART
+   Uses your existing card-product snippet
+   ========================================================= */
+
+.collection-grid .card-product__content {
+  padding-top: 0.9rem;
+}
+
+
+.collection-grid .card-product__add-to-cart {
+
+  min-height: 44px;
+
+  margin-top: 1rem;
+
+  border:
+    1px solid
+    var(--color-text);
+
+  border-radius: 999px;
+
+  background: transparent;
+
+  color: var(--color-text);
+
+  font-size: 0.8rem;
+
+  font-weight: 600;
+
+  letter-spacing: 0.06em;
+
+  text-transform: uppercase;
+
+  transition:
+    background-color var(--duration-fast) ease,
+    color var(--duration-fast) ease,
+    border-color var(--duration-fast) ease,
+    transform var(--duration-fast) ease;
+}
+
+
+.collection-grid .card-product__add-to-cart:hover {
+
+  border-color:
+    var(--color-primary);
+
+  background:
+    var(--color-primary);
+
+  color: white;
+
+  transform:
+    translateY(-1px);
+}
+
+
+.collection-grid
+.card-product__add-to-cart:focus-visible {
+
+  outline:
+    2px solid
+    var(--color-primary);
+
+  outline-offset: 3px;
+}
+
+
+.collection-grid
+.card-product__add-to-cart:disabled {
+
+  opacity: 0.45;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.collection-empty {
+  grid-column: 1 / -1;
+
+  padding:
+    clamp(4rem, 10vw, 8rem)
+    1rem;
+
+  text-align: center;
+}
+
+
+.collection-empty__icon {
+  margin-bottom: 1.25rem;
+
+  color: var(--color-secondary);
+
+  font-size: 2rem;
+}
+
+
+.collection-empty__title {
+  margin: 0 0 0.75rem;
+
+  font-family: var(--font-serif);
+
+  font-size:
+    clamp(2rem, 4vw, 3rem);
+
+  font-weight: 400;
+}
+
+
+.collection-empty__text {
+  max-width: 420px;
+
+  margin:
+    0 auto
+    1.75rem;
+
+  color: var(--color-muted);
+
+  line-height: 1.7;
+}
+
+
+.collection-empty__button {
+
+  display: inline-flex;
+
+  min-height: 44px;
+
+  align-items: center;
+  justify-content: center;
+
+  padding:
+    0.7rem
+    1.4rem;
+
+  border-radius: 999px;
+
+  background:
+    var(--color-primary);
+
+  color: white;
+
+  text-decoration: none;
+
+  font-size: 0.85rem;
+
+  font-weight: 600;
+
+  transition:
+    transform var(--duration-fast) ease,
+    opacity var(--duration-fast) ease;
+}
+
+
+.collection-empty__button:hover {
+
+  transform:
+    translateY(-1px);
+
+  opacity: 0.92;
+}
+
+
+
+/* =========================================================
+   PAGINATION
+   ========================================================= */
+
+.collection-pagination {
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 1.5rem;
+
+  margin-top: 1rem;
+
+  margin-bottom:
+    clamp(4rem, 8vw, 7rem);
+
+  padding-top: 2rem;
+
+  border-top:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--color-text) 10%,
+      transparent
+    );
+}
+
+
+.collection-pagination__pages {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.45rem;
+}
+
+
+.collection-pagination__page,
+.collection-pagination__arrow {
+
+  display: inline-flex;
+
+  min-width: 40px;
+  min-height: 40px;
+
+  align-items: center;
+  justify-content: center;
+
+  padding:
+    0.55rem
+    0.75rem;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius: 999px;
+
+  color: var(--color-text);
+
+  font-size: 0.82rem;
+
+  text-decoration: none;
+
+  transition:
+    background-color var(--duration-fast) ease,
+    color var(--duration-fast) ease,
+    border-color var(--duration-fast) ease;
+}
+
+
+.collection-pagination__page:hover,
+.collection-pagination__arrow:hover {
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--color-text) 20%,
+      transparent
+    );
+
+  background:
+    color-mix(
+      in srgb,
+      var(--color-text) 5%,
+      transparent
+    );
+}
+
+
+.collection-pagination__page--current {
+
+  border-color:
+    var(--color-primary);
+
+  background:
+    var(--color-primary);
+
+  color: white;
+}
+
+
+.collection-pagination__arrow {
+
+  gap: 0.5rem;
+}
+
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media screen and (max-width: 1000px) {
+
+  .collection-grid {
+
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+  }
+
+}
+
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media screen and (max-width: 700px) {
+
+  .collection-page__container {
+
+    width:
+      min(
+        100% - 1.25rem,
+        1320px
+      );
+
+  }
+
+
+  .collection-hero {
+
+    min-height: 340px;
+
+  }
+
+
+  .collection-hero__content {
+
+    padding:
+      1.5rem
+      1.25rem
+      2rem;
+
+  }
+
+
+  .collection-hero__title {
+
+    font-size:
+      clamp(
+        2.75rem,
+        14vw,
+        4rem
+      );
+
+  }
+
+
+  .collection-intro {
+
+    margin:
+      2.5rem auto;
+
+  }
+
+
+  .collection-toolbar {
+
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 1rem;
+
+  }
+
+
+  .collection-toolbar__sort {
+
+    width: 100%;
+
+    justify-content: space-between;
+
+  }
+
+
+  .collection-toolbar__label {
+
+    flex-shrink: 0;
+
+  }
+
+
+  .collection-toolbar__select-wrap {
+
+    flex: 1;
+
+    min-width: 0;
+
+  }
+
+
+  .collection-toolbar__select {
+
+    width: 100%;
+
+    min-width: 0;
+
+  }
+
+
+  .collection-grid {
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap:
+      2rem
+      0.8rem;
+
+    margin-bottom: 3rem;
+
+  }
+
+
+  .collection-grid
+  .card-product__content {
+
+    padding-top:
+      0.7rem;
+
+  }
+
+
+  .collection-grid
+  .card-product__add-to-cart {
+
+    min-height: 42px;
+
+    margin-top: 0.8rem;
+
+    font-size: 0.72rem;
+
+  }
+
+
+  .collection-pagination {
+
+    gap: 0.75rem;
+
+    margin-bottom: 4rem;
+
+  }
+
+
+}
+
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media screen and (max-width: 420px) {
+
+  .collection-grid {
+
+    gap:
+      1.75rem
+      0.65rem;
+
+  }
+
+
+  .collection-grid
+  .card-product__add-to-cart {
+
+    padding-inline:
+      0.5rem;
+
+  }
+
+
+  .collection-pagination__arrow {
+
+    min-width: 36px;
+    min-height: 36px;
+
+    padding-inline:
+      0.55rem;
+
+  }
+
+
+  .collection-pagination__pages {
+
+    gap: 0.2rem;
+
+  }
+
+
+  .collection-pagination__page {
+
+    min-width: 36px;
+    min-height: 36px;
+
+  }
+
+}
+
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .collection-toolbar__select,
+  .collection-grid
+  .card-product__add-to-cart,
+  .collection-empty__button,
+  .collection-pagination__page,
+  .collection-pagination__arrow {
+
+    transition: none;
+
+  }
+
+}
+
+{% endstyle %}
+
+
+
 {% schema %}
+
 {
-  "name": "t:general.collection",
+  "name": "Collection",
   "settings": []
 }
+
 {% endschema %}
