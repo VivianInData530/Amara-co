@@ -1,9 +1,94 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-     "sections": {
-       "hero": {
-         "type": "hero",
-         "settings": {}
-       }
-     },
-     "order": ["hero"]
-   }
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "image": "shopify://shop_images/heroimage.jpg",
+        "eyebrow": "The Warm Metals Edit",
+        "headline": "Elevate Your Style",
+        "description": "Made to be worn every day and passed down when the day is done.",
+        "button1_text": "Shop Ring",
+        "button1_link": "shopify://collections/rings",
+        "button2_text": "Shop All",
+        "button2_link": "shopify://collections/all"
+      }
+    },
+    "category_grid_QGxxwW": {
+      "type": "category-grid",
+      "blocks": {
+        "category_FfKhmE": {
+          "type": "category",
+          "settings": {
+            "collection": "earrings"
+          }
+        },
+        "category_6VJTJi": {
+          "type": "category",
+          "settings": {
+            "collection": "bracelets"
+          }
+        },
+        "category_p9WUMc": {
+          "type": "category",
+          "settings": {
+            "collection": "necklaces"
+          }
+        },
+        "category_rFKXGA": {
+          "type": "category",
+          "settings": {
+            "collection": "rings"
+          }
+        }
+      },
+      "block_order": [
+        "category_FfKhmE",
+        "category_6VJTJi",
+        "category_p9WUMc",
+        "category_rFKXGA"
+      ],
+      "name": "Category grid",
+      "settings": {}
+    },
+    "best_sellers_gRFUmH": {
+      "type": "best-sellers",
+      "name": "Best sellers",
+      "settings": {
+        "collection": "featured-collections"
+      }
+    },
+    "lifestyle_banner_JdjhEn": {
+      "type": "lifestyle-banner",
+      "name": "Lifestyle banner",
+      "settings": {
+        "image_1": "shopify://shop_images/banner1main.jpg",
+        "heading_1": "The Everyday Edit",
+        "link_1": "shopify://collections/all",
+        "button_text_1": "Shop the edit",
+        "image_2": "shopify://shop_images/banner2main.jpg",
+        "heading_2": "New Arrivals",
+        "link_2": "shopify://collections/featured-collections",
+        "button_text_2": "Shop new in",
+        "image_3": "shopify://shop_images/banner3main.jpg",
+        "heading_3": "Gifting, Made Easy",
+        "link_3": "",
+        "button_text_3": "Shop gifts"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "category_grid_QGxxwW",
+    "best_sellers_gRFUmH",
+    "lifestyle_banner_JdjhEn"
+  ]
+}
