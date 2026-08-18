@@ -1,0 +1,80 @@
+{% style %}
+  .trust-row__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    text-align: center;
+    padding: 3rem 1.5rem;
+  }
+
+  .trust-row__icon {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+    color: var(--color-primary);
+  }
+
+  .trust-row__heading {
+    margin: 0 0 0.5rem;
+    color: var(--color-text);
+    font-family: Fraunces, Georgia, serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+  }
+
+  .trust-row__description {
+    margin: 0;
+    color: var(--color-muted);
+    font-family: Inter, sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 750px) {
+    .trust-row__grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+  }
+{% endstyle %}
+
+<section class="trust-row scroll-trigger animate--fade-in">
+  <div class="trust-row__grid">
+    {%- for i in (1..3) -%}
+      {% assign icon_key = 'icon_' | append: i %}
+      {% assign heading_key = 'heading_' | append: i %}
+      {% assign description_key = 'description_' | append: i %}
+
+      {% assign item_icon = section.settings[icon_key] %}
+      {% assign item_heading = section.settings[heading_key] %}
+      {% assign item_description = section.settings[description_key] %}
+
+      <div class="trust-row__item">
+        <div class="trust-row__icon">{{ item_icon }}</div>
+        <h3 class="trust-row__heading">{{ item_heading }}</h3>
+        <p class="trust-row__description">{{ item_description }}</p>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Trust row",
+  "settings": [
+    { "type": "text", "id": "icon_1", "label": "Column 1 icon", "default": "✦" },
+    { "type": "text", "id": "heading_1", "label": "Column 1 heading", "default": "Ethically Sourced" },
+    { "type": "textarea", "id": "description_1", "label": "Column 1 description", "default": "Every stone and metal is traced back to responsibly managed sources." },
+
+    { "type": "text", "id": "icon_2", "label": "Column 2 icon", "default": "✦" },
+    { "type": "text", "id": "heading_2", "label": "Column 2 heading", "default": "Handcrafted Slowly" },
+    { "type": "textarea", "id": "description_2", "label": "Column 2 description", "default": "Small batches, finished by hand — never rushed, never mass-produced." },
+
+    { "type": "text", "id": "icon_3", "label": "Column 3 icon", "default": "✦" },
+    { "type": "text", "id": "heading_3", "label": "Column 3 heading", "default": "Made to Last" },
+    { "type": "textarea", "id": "description_3", "label": "Column 3 description", "default": "Complimentary lifetime polishing on every piece you own." }
+  ],
+  "presets": [
+    { "name": "Trust row" }
+  ]
+}
+{% endschema %}

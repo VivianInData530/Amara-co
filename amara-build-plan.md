@@ -5,7 +5,7 @@
 
 ---
 git add sections/category-grid.liquid 
-git commit -m "feat: category grid with hover zoom and staggered scroll-in
+git commit -m "feat: 3-panel lifestyle banner with hover zoom and staggered scroll-in
 
 ## Complete Build Recap (time estimates)
 
@@ -795,7 +795,7 @@ document.querySelectorAll('[data-carousel]').forEach(el => new Carousel(el));
 
 Build: 3 equal tall panels (stack on mobile) · background image cover · dark gradient overlay bottom 30% · heading + outline button centered bottom · hover: background zooms 1.1x · scroll: fade+slide in, staggered
 
-**v0.dev prompt:**
+**v0.dev prompt:** 
 ```
 Build a 3-panel lifestyle banner for Shopify. CSS only in {% style %}, preserve {% schema %}.
 
