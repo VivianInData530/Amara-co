@@ -225,12 +225,9 @@
   <div class="header__icons">
     <button aria-label="Search">🔍</button>
     <a href="/account" aria-label="Account">👤</a>
-    <button aria-label="Cart" data-cart-toggle>
-      🛒
-      {% if cart.item_count > 0 %}
-        <span class="cart-badge">{{ cart.item_count }}</span>
-      {% endif %}
-    </button>
+    <button aria-label="Cart" data-cart-toggle onclick="openCartDrawer();">
+  🛒 <span data-cart-count>{{ cart.item_count }}</span>
+</button>
   </div>
 
   <button class="header__menu-toggle" aria-label="Menu" aria-expanded="false" data-menu-toggle>

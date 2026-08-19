@@ -906,12 +906,19 @@
 
 
 
-        {% form
-          'product',
-          product,
-          id: 'product-form',
-          novalidate: 'novalidate'
-        %}
+   {% form  
+  'product',  
+  product,  
+  id: 'product-form',  
+  novalidate: 'novalidate',
+  data-add-to-cart-form: '' 
+%}
+
+  <input
+    type="hidden"
+    name="id"
+    value="{{ product.selected_or_first_available_variant.id }}"
+  >
 
 
           {% comment %}
@@ -1016,18 +1023,15 @@
             ========================================
           {% endcomment %}
 
-          <button
-            type="submit"
-            name="add"
-
-            class="product__add-to-cart"
-
-            data-add-to-cart-form
-
-            {% if product.available == false %}
-              disabled
-            {% endif %}
-          >
+         <button 
+  type="submit" 
+  name="add" 
+  class="product__add-to-cart"
+  {% if product.available == false %} 
+    disabled 
+  {% endif %} 
+>
+          
 
             {% if product.available %}
               Add to cart
