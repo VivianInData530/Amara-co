@@ -982,7 +982,9 @@
 
           {% endunless %}
 
-
+          {% if product.type == 'Rings' %}
+  {% render 'size-guide-modal' %}
+{% endif %}
 
           {% comment %}
             ========================================

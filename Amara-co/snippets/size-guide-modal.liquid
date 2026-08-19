@@ -1,0 +1,124 @@
+<div id="size-guide-modal" class="modal" hidden>
+  <div class="modal__content">
+
+    <button
+      type="button"
+      class="modal__close"
+      onclick="document.getElementById('size-guide-modal').hidden = true;"
+    >
+      ×
+    </button>
+
+    <h2>Ring Size Guide</h2>
+
+    <p>
+      Unsure of your ring size?
+      Measure an existing ring's inner diameter.
+    </p>
+
+    <table class="size-table">
+      <tr>
+        <th>US Size</th>
+        <th>Diameter (mm)</th>
+        <th>Circumference (mm)</th>
+      </tr>
+
+      <tr>
+        <td>5</td>
+        <td>15.7</td>
+        <td>49.3</td>
+      </tr>
+
+      <tr>
+        <td>6</td>
+        <td>16.5</td>
+        <td>51.8</td>
+      </tr>
+
+      <tr>
+        <td>7</td>
+        <td>17.4</td>
+        <td>54.6</td>
+      </tr>
+
+      <tr>
+        <td>8</td>
+        <td>18.3</td>
+        <td>57.5</td>
+      </tr>
+
+      <tr>
+        <td>9</td>
+        <td>19.1</td>
+        <td>60.0</td>
+      </tr>
+    </table>
+
+  </div>
+</div>
+
+<button
+  type="button"
+  onclick="document.getElementById('size-guide-modal').hidden = false;"
+  class="size-guide-button"
+>
+  Size Guide
+</button>
+
+{% style %}
+
+  .modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+  }
+
+  .modal[hidden] {
+    display: none;
+  }
+
+  .modal__content {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 500px;
+    position: relative;
+  }
+
+  .modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+
+  .size-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+
+  .size-table th,
+  .size-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: left;
+  }
+
+  .size-guide-button {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+  }
+
+{% endstyle %}

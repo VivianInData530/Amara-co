@@ -5,7 +5,10 @@
 
 ---
 git add sections/category-grid.liquid 
-git commit -m "feat: feat: upcoming teaser with dark block and scale-in animation"
+git commit -m "feat: newsletter signup section with underlined input"
+
+git add snippets/card-product.liquid snippets/price.liquid templates/collection.liquid 
+git commit -m "feat: collection page with product grid, sorting, pagination"
 
 ## Complete Build Recap (time estimates)
 
@@ -60,6 +63,7 @@ The cart drawer JS listens for `submit` on `[data-add-to-cart-form]`. Step 16's 
 npx shopify theme dev  # Start local dev server (auto-syncs to dev store)
 ```
 No `theme push` or `theme pull` yet — nothing modified.
+you have not done the ring size part
 
 ---
 
