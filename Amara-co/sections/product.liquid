@@ -2,692 +2,1071 @@
   Amara & Co. — Product Page
 
   Layout:
-  - Left: Image gallery (main image large, thumbnails below, scrollable on mobile)
-  - Right: Title, price, variant picker, quantity selector, add-to-cart
-  - Below: Description, specs accordion (via product-accordion snippet), related products
+  - Left: Image gallery
+  - Right: Product information, variants, quantity, add to cart
+  - Below: Description and specs accordion
 
-  No JavaScript for variant/image/quantity logic — CSS layout + button styling only.
+  Variant selector is hidden for products that only have
+  Shopify's default variant.
 {% endcomment %}
 
+
+{% style %}
+
+  /* =========================================
+     PRODUCT PAGE
+     ========================================= */
+
+  .product-page {
+    --product-surface: var(--color-bg);
+
+    --product-soft-surface: color-mix(
+      in srgb,
+      var(--color-bg) 92%,
+      var(--color-text)
+    );
+
+    --product-line: color-mix(
+      in srgb,
+      var(--color-text) 16%,
+      transparent
+    );
+
+    width: 100%;
+    background: var(--product-surface);
+    color: var(--color-text);
+  }
+
+
+  .product-page__container {
+    width: min(100% - 3rem, 1320px);
+    margin: 0 auto;
+
+    padding:
+      clamp(1.25rem, 4vw, 3rem)
+      0
+      clamp(4rem, 8vw, 7rem);
+  }
+
+
+  /* =========================================
+     MAIN PRODUCT LAYOUT
+     ========================================= */
+
+  .product {
+    display: grid;
+
+    grid-template-columns:
+      minmax(0, 1.08fr)
+      minmax(320px, 0.92fr);
+
+    gap: clamp(2rem, 6vw, 6rem);
+
+    align-items: start;
+  }
+
+
+  /* =========================================
+     PRODUCT GALLERY
+     ========================================= */
+
+  .product__gallery {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1rem;
+
+    min-width: 0;
+  }
+
+
+  .product__main-image {
+    position: relative;
+
+    width: 100%;
+
+    aspect-ratio: 1 / 1;
+
+    overflow: hidden;
+
+    border-radius: 16px;
+
+    background-color: #f5f0eb;
+  }
+
+
+  .product__image {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition:
+      transform var(--duration-default) ease,
+      opacity var(--duration-default) ease;
+  }
+
+
+  .product__main-image:hover .product__image {
+    transform: scale(1.035);
+  }
+
+
+  /* =========================================
+     PRODUCT THUMBNAILS
+     ========================================= */
+
+  .product__thumbnails {
+    display: flex;
+
+    gap: 0.65rem;
+
+    overflow-x: auto;
+
+    padding:
+      0.15rem
+      0.1rem
+      0.5rem;
+
+    scrollbar-width: thin;
+  }
+
+
+  .product__thumbnail {
+    position: relative;
+
+    flex: 0 0 82px;
+
+    width: 82px;
+    height: 82px;
+
+    padding: 0;
+
+    overflow: hidden;
+
+    border: 2px solid transparent;
+
+    border-radius: 10px;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    opacity: 0.72;
+
+    transition:
+      border-color var(--duration-fast) ease,
+      opacity var(--duration-fast) ease,
+      transform var(--duration-fast) ease,
+      box-shadow var(--duration-fast) ease;
+  }
+
+
+  .product__thumbnail:hover {
+    opacity: 1;
+
+    border-color: var(--color-muted);
+
+    transform: translateY(-2px);
+
+    box-shadow:
+      0 0.5rem 1rem
+      color-mix(
+        in srgb,
+        var(--color-text) 10%,
+        transparent
+      );
+  }
+
+
+  .product__thumbnail--active {
+    opacity: 1;
+
+    border-color: var(--color-primary);
+  }
+
+
+  .product__thumbnail--active::after {
+    position: absolute;
+
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    height: 4px;
+
+    content: "";
+
+    background: var(--color-primary);
+  }
+
+
+  .product__thumbnail:focus-visible {
+    outline:
+      2px solid
+      var(--color-primary);
+
+    outline-offset: 3px;
+  }
+
+
+  .product__thumbnail img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 0.45rem;
+  }
+
+
+  /* =========================================
+     PRODUCT INFORMATION
+     ========================================= */
+
+  .product__info {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 1.35rem;
+
+    padding:
+      clamp(0rem, 2vw, 1.5rem)
+      0;
+  }
+
+
+  .product__vendor {
+    margin: 0;
+
+    color: var(--color-primary);
+
+    font-size: 0.7rem;
+    font-weight: 700;
+
+    letter-spacing: 0.16em;
+
+    text-transform: uppercase;
+  }
+
+
+  .product__title {
+    max-width: 620px;
+
+    margin: 0;
+
+    font-family: var(--font-serif);
+
+    font-size:
+      clamp(2.25rem, 5vw, 4.5rem);
+
+    font-weight: 400;
+
+    letter-spacing: -0.055em;
+
+    line-height: 0.98;
+
+    text-wrap: balance;
+  }
+
+
+  /* =========================================
+     PRICE
+     ========================================= */
+
+  .product__price {
+    display: flex;
+
+    align-items: baseline;
+
+    gap: 0.7rem;
+
+    color: var(--color-primary);
+
+    font-size: 1.25rem;
+
+    font-weight: 600;
+  }
+
+
+  .product__price-regular {
+    color: var(--color-muted);
+
+    font-size: 0.95rem;
+
+    text-decoration: line-through;
+  }
+
+
+  .product__price-sale {
+    color: var(--color-primary);
+  }
+
+
+  .product__price-current {
+    color: var(--color-primary);
+  }
+
+
+  /* =========================================
+     PRODUCT OPTIONS
+     ========================================= */
+
+  .product__option {
+    margin: 0;
+
+    padding:
+      1.25rem
+      0
+      0;
+
+    border: 0;
+
+    border-top:
+      1px solid
+      var(--product-line);
+  }
+
+
+  .product__option-label {
+    display: block;
+
+    margin-bottom: 0.8rem;
+
+    color: var(--color-text);
+
+    font-size: 0.72rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.1em;
+
+    text-transform: uppercase;
+  }
+
+
+  .product__option-values {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 0.6rem;
+  }
+
+
+  .product__option-input {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    overflow: hidden;
+
+    clip: rect(0 0 0 0);
+  }
+
+
+  .product__option-button {
+    display: inline-flex;
+
+    min-height: 2.8rem;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding:
+      0.65rem
+      1.2rem;
+
+    border:
+      1px solid
+      var(--product-line);
+
+    border-radius: 999px;
+
+    background: transparent;
+
+    color: var(--color-text);
+
+    cursor: pointer;
+
+    font-size: 0.85rem;
+
+    transition:
+      background-color 180ms ease,
+      border-color 180ms ease,
+      color 180ms ease,
+      transform 180ms ease;
+  }
+
+
+  .product__option-button:hover {
+    border-color: var(--color-primary);
+
+    transform: scale(1.025);
+  }
+
+
+  .product__option-input:checked
+  + .product__option-button {
+    border-color: var(--color-primary);
+
+    background: var(--color-primary);
+
+    color:
+      var(
+        --color-primary-foreground,
+        var(--color-bg)
+      );
+  }
+
+
+  .product__option-input:focus-visible
+  + .product__option-button {
+    outline:
+      2px solid
+      var(--color-primary);
+
+    outline-offset: 3px;
+  }
+
+
+  /* =========================================
+     QUANTITY
+     ========================================= */
+
+  .product__info .quantity-selector {
+    display: flex;
+
+    align-items: center;
+
+    gap: 1rem;
+
+    padding-top: 1.25rem;
+
+    border-top:
+      1px solid
+      var(--product-line);
+  }
+
+
+  .product__info .quantity-selector label {
+    color: var(--color-text);
+
+    font-size: 0.8rem;
+
+    font-weight: 600;
+  }
+
+
+  .product__info .quantity-selector input {
+    width: 5rem;
+
+    min-height: 2.8rem;
+
+    border:
+      1px solid
+      var(--product-line);
+
+    border-radius: 999px;
+
+    background: transparent;
+
+    color: var(--color-text);
+
+    text-align: center;
+  }
+
+
+  .product__info .quantity-selector input:focus-visible {
+    outline:
+      2px solid
+      var(--color-primary);
+
+    outline-offset: 2px;
+  }
+
+
+  /* =========================================
+     ADD TO CART
+     ========================================= */
+
+  .product__add-to-cart {
+    display: inline-flex;
+
+    width: 100%;
+
+    min-height: 3.4rem;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding:
+      1rem
+      1.5rem;
+
+    border:
+      1px solid
+      var(--color-primary);
+
+    border-radius: 0.7rem;
+
+    background: var(--color-primary);
+
+    color:
+      var(
+        --color-primary-foreground,
+        var(--color-bg)
+      );
+
+    cursor: pointer;
+
+    font-size: 0.8rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
+
+    text-transform: uppercase;
+
+    transition:
+      background-color 180ms ease,
+      color 180ms ease,
+      transform 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+
+  .product__add-to-cart:hover {
+    transform: scale(1.015);
+
+    box-shadow:
+      0 0.8rem 1.5rem
+      color-mix(
+        in srgb,
+        var(--color-primary) 22%,
+        transparent
+      );
+  }
+
+
+  .product__add-to-cart:focus-visible {
+    outline:
+      2px solid
+      var(--color-primary);
+
+    outline-offset: 3px;
+  }
+
+
+  .product__add-to-cart:disabled {
+    border-color: var(--product-line);
+
+    background: var(--product-soft-surface);
+
+    color: var(--color-muted);
+
+    cursor: not-allowed;
+
+    transform: none;
+
+    box-shadow: none;
+  }
+
+
+  /* =========================================
+     DESCRIPTION
+     ========================================= */
+
+  .product__description {
+    padding-top: 1.5rem;
+
+    border-top:
+      1px solid
+      var(--product-line);
+
+    color: var(--color-text);
+
+    font-size: 0.92rem;
+
+    line-height: 1.75;
+  }
+
+
+  .product__description h2,
+  .product__description h3 {
+    font-family: var(--font-serif);
+
+    font-weight: 400;
+  }
+
+
+  /* =========================================
+     TABLET
+     ========================================= */
+
+  @media screen and (max-width: 900px) {
+
+    .product {
+      grid-template-columns: 1fr;
+
+      gap: 2.5rem;
+    }
+
+
+    .product__gallery {
+      position: static;
+    }
+
+
+    .product__main-image,
+    .product__thumbnails {
+      max-width: 680px;
+
+      margin-inline: auto;
+    }
+
+  }
+
+
+  /* =========================================
+     MOBILE
+     ========================================= */
+
+  @media screen and (max-width: 600px) {
+
+    .product-page__container {
+      width:
+        min(
+          100% - 1.25rem,
+          1320px
+        );
+    }
+
+
+    .product__main-image {
+      aspect-ratio: 1 / 1.08;
+
+      border-radius: 0.9rem;
+    }
+
+
+    .product__title {
+      font-size:
+        clamp(
+          2rem,
+          10vw,
+          3rem
+        );
+    }
+
+
+    .product__thumbnail {
+      flex-basis: 68px;
+
+      width: 68px;
+
+      height: 68px;
+    }
+
+
+    .product__info .quantity-selector {
+      justify-content: space-between;
+    }
+
+
+    .product__info .quantity-selector input {
+      width: 4.5rem;
+    }
+
+  }
+
+
+  /* =========================================
+     REDUCED MOTION
+     ========================================= */
+
+  @media (prefers-reduced-motion: reduce) {
+
+    .product__image,
+    .product__thumbnail,
+    .product__option-button,
+    .product__add-to-cart {
+      transition: none;
+    }
+
+  }
+
+{% endstyle %}
+
+
+
 <div class="product-page">
+
   <div class="product-page__container">
 
-    {% comment %}
-      ========================================
-      BREADCRUMBS
-      ========================================
-    {% endcomment %}
-    <!-- breadcrumbs snippet to be added in Phase 1 -->
 
     {% comment %}
       ========================================
       TOP: GALLERY + INFO
       ========================================
     {% endcomment %}
+
     <div class="product">
 
+
       {% comment %}
-        -----------------------------
-        GALLERY (left)
-        -----------------------------
+        --------------------------------------
+        GALLERY
+        --------------------------------------
       {% endcomment %}
+
       <div class="product__gallery">
+
+
         <div class="product__main-image">
+
           {% if product.featured_image %}
+
             <img
               id="main-image"
+
               srcset="
                 {{ product.featured_image | image_url: width: 600 }} 600w,
                 {{ product.featured_image | image_url: width: 1000 }} 1000w,
                 {{ product.featured_image | image_url: width: 1400 }} 1400w
               "
-              sizes="(min-width: 1000px) 50vw, (min-width: 750px) 55vw, 100vw"
+
+              sizes="
+                (min-width: 1000px) 50vw,
+                (min-width: 750px) 55vw,
+                100vw
+              "
+
               src="{{ product.featured_image | image_url: width: 1000 }}"
+
               alt="{{ product.featured_image.alt | default: product.title }}"
+
               width="{{ product.featured_image.width }}"
+
               height="{{ product.featured_image.height }}"
+
               loading="eager"
+
               class="product__image"
             >
+
           {% endif %}
+
         </div>
+
+
 
         {% if product.images.size > 1 %}
-          <div class="product__thumbnails" role="list" aria-label="Product images">
+
+          <div
+            class="product__thumbnails"
+            role="list"
+            aria-label="Product images"
+          >
+
             {% for image in product.images %}
+
               <button
                 type="button"
-                class="product__thumbnail"
-                data-image-id="{{ image.id }}"
-                onclick="document.getElementById('main-image').src = '{{ image | image_url: width: 1000 }}';"
-                aria-label="View image {{ forloop.index }}"
+
+                class="
+                  product__thumbnail
+                  {% if forloop.first %}
+                    product__thumbnail--active
+                  {% endif %}
+                "
+
+                aria-label="
+                  View product image {{ forloop.index }}
+                "
+
+                {% if forloop.first %}
+                  aria-current="true"
+                {% endif %}
+
+                onclick="
+                  document.getElementById('main-image').srcset =
+                  '{{ image | image_url: width: 600 }} 600w, {{ image | image_url: width: 1000 }} 1000w, {{ image | image_url: width: 1400 }} 1400w';
+
+                  document.getElementById('main-image').src =
+                  '{{ image | image_url: width: 1000 }}';
+
+                  document.getElementById('main-image').alt =
+                  '{{ image.alt | default: product.title | escape }}';
+
+                  document.querySelectorAll('.product__thumbnail').forEach(function(button) {
+                    button.classList.remove('product__thumbnail--active');
+                    button.removeAttribute('aria-current');
+                  });
+
+                  this.classList.add('product__thumbnail--active');
+                  this.setAttribute('aria-current', 'true');
+                "
               >
+
                 <img
-                  src="{{ image | image_url: width: 120 }}"
+                  srcset="
+                    {{ image | image_url: width: 80 }} 80w,
+                    {{ image | image_url: width: 160 }} 160w
+                  "
+
+                  sizes="80px"
+
+                  src="{{ image | image_url: width: 160 }}"
+
                   alt="{{ image.alt | default: product.title }}"
-                  loading="lazy"
-                  class="product__thumbnail-img"
+
                   width="{{ image.width }}"
+
                   height="{{ image.height }}"
+
+                  loading="
+                    {% if forloop.first %}
+                      eager
+                    {% else %}
+                      lazy
+                    {% endif %}
+                  "
                 >
+
               </button>
+
             {% endfor %}
+
           </div>
+
         {% endif %}
+
       </div>
 
+
+
       {% comment %}
-        -----------------------------
-        INFO (right)
-        -----------------------------
+        --------------------------------------
+        PRODUCT INFORMATION
+        --------------------------------------
       {% endcomment %}
+
       <div class="product__info">
 
-        <p class="product__vendor">{{ product.vendor }}</p>
 
-        <h1 class="product__title">{{ product.title }}</h1>
+        {% if product.vendor != blank %}
 
-        <div class="product__price-wrap">
-          <span class="product__price">
-            {{ product.selected_or_first_available_variant.price | money }}
-          </span>
-          {% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price %}
-            <span class="product__price product__price--compare">
-              {{ product.selected_or_first_available_variant.compare_at_price | money }}
+          <p class="product__vendor">
+            {{ product.vendor }}
+          </p>
+
+        {% endif %}
+
+
+        <h1 class="product__title">
+          {{ product.title }}
+        </h1>
+
+
+
+        {% comment %}
+          PRICE
+        {% endcomment %}
+
+        <div class="product__price">
+
+          {% if product.compare_at_price > product.price %}
+
+            <span class="product__price-regular">
+              {{ product.compare_at_price | money }}
             </span>
+
+            <span class="product__price-sale">
+              {{ product.price | money }}
+            </span>
+
+          {% else %}
+
+            <span class="product__price-current">
+              {{ product.price | money }}
+            </span>
+
           {% endif %}
+
         </div>
 
-        {% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
-          {% for option in product.options_with_values %}
-            <fieldset class="product__option">
-              <legend class="product__option-label">{{ option.name }}</legend>
-              <div class="product__option-values">
-                {% for value in option.values %}
-                  <input
-                    type="radio"
-                    id="option-{{ option.position }}-{{ forloop.index }}"
-                    name="options[{{ option.name }}]"
-                    value="{{ value }}"
-                    {% if value == option.selected_value %}checked{% endif %}
-                    class="product__option-input"
-                  >
-                  <label
-                    for="option-{{ option.position }}-{{ forloop.index }}"
-                    class="product__option-button"
-                  >{{ value }}</label>
-                {% endfor %}
-              </div>
-            </fieldset>
-          {% endfor %}
 
-          <fieldset class="product__quantity">
-            <legend class="product__quantity-label">Quantity</legend>
-            <div class="product__quantity-controls">
-              <button type="button" class="product__quantity-button product__quantity-button--minus" aria-label="Decrease quantity">−</button>
-              <input
-                type="number"
-                id="quantity"
-                name="quantity"
-                value="1"
-                min="1"
-                class="product__quantity-input"
-                inputmode="numeric"
-              >
-              <button type="button" class="product__quantity-button product__quantity-button--plus" aria-label="Increase quantity">+</button>
-            </div>
-          </fieldset>
+
+        {% form
+          'product',
+          product,
+          id: 'product-form',
+          novalidate: 'novalidate'
+        %}
+
+
+          {% comment %}
+            ========================================
+            VARIANT OPTIONS
+
+            IMPORTANT:
+            Don't show "Default Title" for products
+            that have only one/default variant.
+            Real options such as ring sizes still show.
+            ========================================
+          {% endcomment %}
+
+          {% unless product.has_only_default_variant %}
+
+            {% for option in product.options_with_values %}
+
+              <fieldset class="product__option">
+
+                <legend class="product__option-label">
+                  {{ option.name }}
+                </legend>
+
+
+                <div class="product__option-values">
+
+
+                  {% for value in option.values %}
+
+                    <input
+                      type="radio"
+
+                      id="
+                        option-{{ option.position }}-{{ forloop.index }}
+                      "
+
+                      name="options[{{ option.name }}]"
+
+                      value="{{ value }}"
+
+                      {% if value == option.selected_value %}
+                        checked
+                      {% endif %}
+
+                      class="product__option-input"
+                    >
+
+
+                    <label
+                      for="
+                        option-{{ option.position }}-{{ forloop.index }}
+                      "
+
+                      class="product__option-button"
+                    >
+                      {{ value }}
+                    </label>
+
+
+                  {% endfor %}
+
+
+                </div>
+
+              </fieldset>
+
+            {% endfor %}
+
+          {% endunless %}
+
+
+
+          {% comment %}
+            ========================================
+            QUANTITY
+            ========================================
+          {% endcomment %}
+
+          <div class="quantity-selector">
+
+            <label for="quantity">
+              Quantity
+            </label>
+
+            <input
+              type="number"
+              id="quantity"
+              name="quantity"
+              value="1"
+              min="1"
+            >
+
+          </div>
+
+
+
+          {% comment %}
+            ========================================
+            ADD TO CART
+            ========================================
+          {% endcomment %}
 
           <button
             type="submit"
             name="add"
+
             class="product__add-to-cart"
+
             data-add-to-cart-form
-            {% if product.available == false %}disabled{% endif %}
+
+            {% if product.available == false %}
+              disabled
+            {% endif %}
           >
-            {% if product.available %}Add to cart{% else %}Sold out{% endif %}
+
+            {% if product.available %}
+              Add to cart
+            {% else %}
+              Sold out
+            {% endif %}
+
           </button>
+
+
         {% endform %}
 
+
+
         {% if product.description != blank %}
+
           <div class="product__description">
             {{ product.description }}
           </div>
+
         {% endif %}
 
-        <div class="product__details">
-          <div class="product__accordion" aria-label="Product specifications">
-            <p class="product__accordion-label">Specs</p>
-            <div class="product__accordion-body">
-              <p>Material, finish, and care details will appear here.</p>
-            </div>
-          </div>
 
-          <div class="product__related">
-            <h2 class="product__related-title">Related products</h2>
-            <div class="product__related-placeholder">Curated picks coming soon.</div>
-          </div>
-        </div>
+        {% render 'product-accordion' %}
+
+
       </div>
+
     </div>
 
-    {% comment %}
-      ========================================
-      RELATED PRODUCTS
-      ========================================
-    {% endcomment %}
-
   </div>
+
 </div>
 
-{% style %}
-  /* =========================================================
-     PRODUCT PAGE — base
-     ========================================================= */
-  .product-page {
-    width: 100%;
-    background: var(--color-bg);
-    color: var(--color-text);
-  }
 
-  .product-page__container {
-    width: min(100% - 2.5rem, 1320px);
-    margin: 0 auto;
-    padding: clamp(1.5rem, 4vw, 3rem) 0 clamp(4rem, 8vw, 7rem);
-  }
-
-  /* =========================================================
-     PRODUCT LAYOUT — two columns
-     ========================================================= */
-  .product {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(2rem, 5vw, 4.5rem);
-    align-items: start;
-  }
-
-  /* =========================================================
-     GALLERY
-     ========================================================= */
-  .product__gallery {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    position: sticky;
-    top: 1rem;
-  }
-
-  .product__main-image {
-    width: 100%;
-    aspect-ratio: 1;
-    border-radius: 16px;
-    overflow: hidden;
-    background-color: color-mix(in srgb, var(--color-text) 5%, var(--color-bg));
-  }
-
-  .product__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform var(--duration-default, 300ms) ease;
-    border-radius: 16px;
-  }
-
-  @media (hover: hover) {
-    .product__main-image:hover .product__image {
-      transform: scale(1.03);
-    }
-  }
-
-  .product__thumbnails {
-    display: flex;
-    gap: 0.6rem;
-    overflow-x: auto;
-    padding-bottom: 0.25rem;
-    scrollbar-width: thin;
-  }
-
-  .product__thumbnails::-webkit-scrollbar {
-    height: 4px;
-  }
-
-  .product__thumbnails::-webkit-scrollbar-thumb {
-    background: color-mix(in srgb, var(--color-text) 20%, transparent);
-    border-radius: 999px;
-  }
-
-  .product__thumbnail {
-    flex: 0 0 72px;
-    width: 72px;
-    aspect-ratio: 1;
-    padding: 0;
-    border: 2px solid transparent;
-    border-radius: 10px;
-    overflow: hidden;
-    background: transparent;
-    cursor: pointer;
-    transition:
-      border-color var(--duration-fast, 150ms) ease,
-      transform var(--duration-fast, 150ms) ease;
-  }
-
-  .product__thumbnail:hover {
-    border-color: var(--color-primary);
-    transform: translateY(-1px);
-  }
-
-  .product__thumbnail:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
-  }
-
-  .product__thumbnail-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    border-radius: 8px;
-  }
-
-  /* =========================================================
-     PRODUCT INFO
-     ========================================================= */
-  .product__info {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .product__vendor {
-    margin: 0;
-    color: var(--color-muted);
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-  }
-
-  .product__title {
-    margin: 0;
-    font-family: var(--font-serif);
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 400;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    text-wrap: balance;
-  }
-
-  .product__price-wrap {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-  }
-
-  .product__price {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--color-text);
-  }
-
-  .product__price--compare {
-    color: var(--color-muted);
-    text-decoration: line-through;
-    font-size: 1rem;
-    font-weight: 500;
-  }
-
-  /* =========================================================
-     VARIANT PICKER
-     ========================================================= */
-  .product__option {
-    border: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .product__option-label,
-  .product__quantity-label {
-    display: block;
-    margin-bottom: 0.8rem;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-text);
-  }
-
-  .product__option-values {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-  }
-
-  .product__option-input {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    clip: rect(0 0 0 0);
-    overflow: hidden;
-    appearance: none;
-  }
-
-  .product__option-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    padding: 0.55rem 1.25rem;
-    border: 1px solid color-mix(in srgb, var(--color-text) 22%, transparent);
-    border-radius: 999px;
-    background: transparent;
-    color: var(--color-text);
-    font-size: 0.85rem;
-    font-weight: 500;
-    cursor: pointer;
-    user-select: none;
-    transition:
-      background-color var(--duration-fast, 150ms) ease,
-      color var(--duration-fast, 150ms) ease,
-      border-color var(--duration-fast, 150ms) ease,
-      transform var(--duration-fast, 150ms) ease;
-  }
-
-  .product__option-button:hover {
-    border-color: var(--color-text);
-    transform: translateY(-1px) scale(1.01);
-  }
-
-  .product__option-input:focus-visible + .product__option-button {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
-  }
-
-  .product__option-input:checked + .product__option-button {
-    background: var(--color-primary);
-    color: #fff;
-    border-color: var(--color-primary);
-  }
-
-  .product__option-input:checked + .product__option-button:hover {
-    background: color-mix(in srgb, var(--color-primary) 88%, #000);
-    border-color: color-mix(in srgb, var(--color-primary) 88%, #000);
-  }
-
-  /* =========================================================
-     QUANTITY SELECTOR
-     ========================================================= */
-  .product__quantity {
-    border: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .product__quantity-controls {
-    display: inline-flex;
-    align-items: center;
-    border: 1px solid color-mix(in srgb, var(--color-text) 18%, transparent);
-    border-radius: 999px;
-    overflow: hidden;
-    background: color-mix(in srgb, var(--color-bg) 82%, var(--color-text) 18%);
-  }
-
-  .product__quantity-button {
-    width: 42px;
-    height: 42px;
-    border: none;
-    background: transparent;
-    color: var(--color-text);
-    font-size: 1.35rem;
-    line-height: 1;
-    cursor: pointer;
-    transition: transform var(--duration-fast, 150ms) ease, background-color var(--duration-fast, 150ms) ease;
-  }
-
-  .product__quantity-button:hover {
-    background: color-mix(in srgb, var(--color-text) 6%, var(--color-bg));
-    transform: scale(1.04);
-  }
-
-  .product__quantity-input {
-    width: 64px;
-    border: none;
-    background: transparent;
-    color: var(--color-text);
-    text-align: center;
-    font-size: 1rem;
-    font-weight: 600;
-    appearance: textfield;
-    -moz-appearance: textfield;
-  }
-
-  .product__quantity-input::-webkit-outer-spin-button,
-  .product__quantity-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  .product__quantity-input:focus-visible {
-    outline: none;
-  }
-
-  /* =========================================================
-     ADD TO CART
-     ========================================================= */
-  .product__add-to-cart {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 52px;
-    width: 100%;
-    padding: 1rem 2rem;
-    border: 1px solid var(--color-primary);
-    border-radius: 999px;
-    background: var(--color-primary);
-    color: #fff;
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition:
-      background-color var(--duration-fast, 150ms) ease,
-      border-color var(--duration-fast, 150ms) ease,
-      transform var(--duration-fast, 150ms) ease,
-      box-shadow var(--duration-fast, 150ms) ease;
-  }
-
-  .product__add-to-cart:hover {
-    background: color-mix(in srgb, var(--color-primary) 88%, #000);
-    border-color: color-mix(in srgb, var(--color-primary) 88%, #000);
-    transform: translateY(-2px) scale(1.01);
-    box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--color-primary) 60%, transparent);
-  }
-
-  .product__add-to-cart:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 3px;
-  }
-
-  .product__add-to-cart:active {
-    transform: translateY(0);
-  }
-
-  .product__add-to-cart:disabled {
-    background: transparent;
-    color: var(--color-muted);
-    border-color: color-mix(in srgb, var(--color-text) 18%, transparent);
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-  }
-
-  /* =========================================================
-     DESCRIPTION + DETAILS
-     ========================================================= */
-  .product__description {
-    padding-top: 0.5rem;
-    border-top: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
-    color: var(--color-text);
-    font-size: 0.95rem;
-    line-height: 1.75;
-  }
-
-  .product__description h2,
-  .product__description h3 {
-    font-family: var(--font-serif);
-    font-weight: 400;
-    letter-spacing: -0.01em;
-  }
-
-  .product__description p {
-    margin: 0 0 1rem;
-  }
-
-  .product__description p:last-child {
-    margin-bottom: 0;
-  }
-
-  .product__details {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-
-  .product__accordion {
-    border-top: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
-    padding-top: 1rem;
-  }
-
-  .product__accordion-label,
-  .product__related-title {
-    margin: 0 0 0.75rem;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-text);
-  }
-
-  .product__accordion-body,
-  .product__related-placeholder {
-    color: var(--color-muted);
-    font-size: 0.92rem;
-    line-height: 1.7;
-  }
-
-  .product__accordion-body p {
-    margin: 0;
-  }
-
-  .product__related {
-    border-top: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
-    padding-top: 1rem;
-  }
-
-  /* =========================================================
-     RESPONSIVE — tablet
-     ========================================================= */
-  @media screen and (max-width: 1000px) {
-    .product {
-      grid-template-columns: 1fr;
-      gap: 2.5rem;
-    }
-
-    .product__gallery {
-      position: static;
-    }
-
-    .product__main-image {
-      max-width: 560px;
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    .product__thumbnails {
-      max-width: 560px;
-      margin: 0 auto;
-      width: 100%;
-    }
-  }
-
-  /* =========================================================
-     RESPONSIVE — mobile
-     ========================================================= */
-  @media screen and (max-width: 700px) {
-    .product-page__container {
-      width: min(100% - 1.5rem, 1320px);
-    }
-
-    .product__gallery {
-      gap: 0.75rem;
-    }
-
-    .product__main-image {
-      border-radius: 12px;
-    }
-
-    .product__image {
-      border-radius: 12px;
-    }
-
-    .product__title {
-      font-size: clamp(1.75rem, 7vw, 2.25rem);
-    }
-
-    .product__option-button {
-      min-height: 42px;
-      padding: 0.5rem 1rem;
-      font-size: 0.82rem;
-    }
-
-    .product__quantity-controls {
-      width: 100%;
-      max-width: 220px;
-    }
-
-    .product__add-to-cart {
-      width: 100%;
-      min-height: 50px;
-      font-size: 0.82rem;
-    }
-
-    .product__description {
-      font-size: 0.9rem;
-    }
-  }
-
-  /* =========================================================
-     RESPONSIVE — small mobile
-     ========================================================= */
-  @media screen and (max-width: 420px) {
-    .product__thumbnail {
-      flex: 0 0 64px;
-      width: 64px;
-    }
-  }
-
-  /* =========================================================
-     REDUCED MOTION
-     ========================================================= */
-  @media (prefers-reduced-motion: reduce) {
-    .product__image,
-    .product__thumbnail,
-    .product__option-button,
-    .product__quantity-button,
-    .product__add-to-cart {
-      transition: none;
-    }
-  }
-{% endstyle %}
 
 {% schema %}
+
 {
   "name": "Product",
   "settings": []
 }
+
 {% endschema %}

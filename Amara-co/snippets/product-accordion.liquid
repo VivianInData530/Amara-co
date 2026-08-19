@@ -17,7 +17,7 @@
 
   <details class="product-accordion__item">
     <summary class="product-accordion__summary">Care</summary>
-    <div class="product-accordion__content">{{ product.metafields.jewelry.care_instructions }}</div>
+    <div class="product-accordion__content"> {{ product.metafields.jewelry.care_instructions | metafield_tag }}</div>
   </details>
 </div>
 
