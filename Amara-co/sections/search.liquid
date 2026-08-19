@@ -2,6 +2,39 @@
   Blank search template placeholder.
 {% endcomment %}
 
+<div class="search-page">
+  <h1 class="search-page__title">Search Results</h1>
+  <form method="get" action="/search" class="search-page__form">
+    <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search products...">
+    <button type="submit">Search</button>
+  </form>
+
+  {% if search.results.size > 0 %}
+    <p class="search-page__count">{{ search.results_count }} results found</p>
+    <div class="search-results">
+      {% for result in search.results %}
+        {% if result.object_type == 'product' %}
+          {% render 'card-product', card_product: result %}
+        {% else %}
+          <div class="search-result-item"><h3><a href="{{ result.url }}">{{ result.title }}</a></h3></div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="search-page__empty">No results found for "{{ search.terms | escape }}"</p>
+    <p><a href="/">Return home</a></p>
+  {% endif %}
+</div>
+
+{% style %}
+  .search-page { max-width: 1200px; margin: 2rem auto; }
+  .search-page__title { font-family: var(--font-serif); font-size: 2rem; margin-bottom: 2rem; }
+  .search-page__form { display: flex; gap: 1rem; margin-bottom: 2rem; }
+  .search-page__form input { flex: 1; padding: 0.75rem; border: 1px solid var(--color-muted); border-radius: 4px; }
+  .search-results { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem; }
+  .search-page__empty { text-align: center; color: var(--color-muted); padding: 2rem; }
+{% endstyle %}
+
 {% schema %}
 {
   "name": "t:general.search",
