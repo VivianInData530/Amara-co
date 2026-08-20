@@ -39,6 +39,10 @@ async function refreshCart() {
 }
 
 async function removeItem(key) {
+  const button = event.target;
+  button.disabled = true;
+  button.style.opacity = '0.5';
+
   try {
     const response = await fetch('/cart/change.js', {
       method: 'POST',
@@ -59,6 +63,8 @@ async function removeItem(key) {
     window.location.reload();
   } catch (error) {
     console.error('Remove item error:', error);
+    button.disabled = false;
+    button.style.opacity = '1';
   }
 }
 
