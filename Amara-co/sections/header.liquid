@@ -350,6 +350,7 @@
       background:
         transparent;
     }
+  
 
 
     /*
@@ -360,6 +361,11 @@
     .header__icons a[aria-label="Account"] {
       display: none;
     }
+
+   
+  .header__icons button[aria-label="Search"] {
+    display: none;
+  }
 
 
     .header__nav--drawer:not([hidden]) {
@@ -542,9 +548,9 @@
     >
       🛒
 
-      <span data-cart-count>
-        {{ cart.item_count }}
-      </span>
+    <span class="cart-badge" data-cart-count>
+  {{ cart.item_count }}
+</span>
 
     </button>
 
