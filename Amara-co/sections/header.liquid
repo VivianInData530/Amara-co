@@ -2,253 +2,632 @@
   Header section — sticky nav, desktop + mobile.
 {% endcomment %}
 
+
 {% style %}
+
   .header {
     position: sticky;
     top: 0;
     z-index: 30;
+
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+
+    grid-template-columns:
+      1fr
+      auto
+      1fr;
+
     align-items: center;
+
     gap: 2rem;
+
     width: 100%;
-    padding: 1rem clamp(1rem, 4vw, 4rem);
+
+    padding:
+      1rem
+      clamp(1rem, 4vw, 4rem);
+
     background: var(--color-bg);
     color: var(--color-text);
-    border-radius: 0 0 1rem 1rem;
+
+    border-radius:
+      0
+      0
+      1rem
+      1rem;
   }
 
+
   .header.header--sticky {
-    background: color-mix(in srgb, var(--color-bg) 88%, transparent);
-    box-shadow: 0 0.5rem 1.5rem rgba(43, 36, 30, 0.1);
+    background:
+      color-mix(
+        in srgb,
+        var(--color-bg) 88%,
+        transparent
+      );
+
+    box-shadow:
+      0
+      0.5rem
+      1.5rem
+      rgba(43, 36, 30, 0.1);
+
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
+
 
   .header__nav--desktop {
     display: block;
   }
 
+
   .header__links,
   .header__nav--drawer ul {
     display: flex;
+
     align-items: center;
-    gap: clamp(1rem, 2vw, 2rem);
+
+    gap:
+      clamp(1rem, 2vw, 2rem);
+
     margin: 0;
     padding: 0;
+
     list-style: none;
   }
+
 
   .header a {
     color: var(--color-text);
     text-decoration: none;
   }
 
+
   .header__links a,
   .header__nav--drawer a {
     position: relative;
+
     font-size: 0.875rem;
     font-weight: 500;
+
     letter-spacing: 0.04em;
   }
+
 
   .header__links a::after,
   .header__nav--drawer a::after {
     position: absolute;
+
     right: 0;
     bottom: -0.35rem;
     left: 0;
+
     height: 1px;
-    background: var(--color-primary);
+
+    background:
+      var(--color-primary);
+
     content: "";
-    transform: scaleX(0);
-    transform-origin: right;
+
+    transform:
+      scaleX(0);
+
+    transform-origin:
+      right;
   }
+
 
   .header__links a:hover::after,
   .header__nav--drawer a:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
+    transform:
+      scaleX(1);
+
+    transform-origin:
+      left;
   }
+
 
   .header__logo {
     justify-self: center;
+
     text-align: center;
   }
 
+
   .header__logo a {
     color: var(--color-text);
-    font-family: Fraunces, Georgia, serif;
-    font-size: clamp(1.25rem, 2vw, 1.75rem);
+
+    font-family:
+      Fraunces,
+      Georgia,
+      serif;
+
+    font-size:
+      clamp(
+        1.25rem,
+        2vw,
+        1.75rem
+      );
+
     font-weight: 600;
+
     letter-spacing: 0.02em;
   }
 
+
   .header__icons {
     display: flex;
+
     justify-content: flex-end;
+
     align-items: center;
+
     gap: 0.75rem;
   }
+
 
   .header__icons button,
   .header__icons a {
     position: relative;
+
     display: grid;
+
     place-items: center;
+
     width: 2.5rem;
     height: 2.5rem;
+
     padding: 0;
+
     color: var(--color-text);
+
     background: transparent;
+
     border: 0;
+
     border-radius: 999px;
+
     font-size: 1.1rem;
+
     text-decoration: none;
   }
 
+
   .header__icons button:hover,
   .header__icons a:hover {
-    transform: scale(1.08);
+    transform:
+      scale(1.08);
   }
+
 
   .cart-badge {
     position: absolute;
+
     top: -0.1rem;
     right: -0.1rem;
+
     display: grid;
+
     place-items: center;
+
     min-width: 1.1rem;
     height: 1.1rem;
-    padding: 0 0.2rem;
-    color: var(--color-text);
-    background: color-mix(in srgb, var(--color-primary) 35%, transparent);
-    border: 1px solid color-mix(in srgb, var(--color-primary) 60%, transparent);
-    border-radius: 50%;
-    font-size: 0.65rem;
-    line-height: 1;
+
+    padding:
+      0
+      0.2rem;
+
+    color:
+      var(--color-text);
+
+    background:
+      color-mix(
+        in srgb,
+        var(--color-primary) 35%,
+        transparent
+      );
+
+    border:
+      1px solid
+      color-mix(
+        in srgb,
+        var(--color-primary) 60%,
+        transparent
+      );
+
+    border-radius:
+      50%;
+
+    font-size:
+      0.65rem;
+
+    line-height:
+      1;
   }
+
 
   .header__menu-toggle {
     display: none;
   }
 
+
   .header__nav--drawer {
     display: none;
   }
 
+
+  /* =========================================
+     MOBILE
+     ========================================= */
+
   @media screen and (max-width: 749px) {
+
     .header {
-      grid-template-columns: auto 1fr auto;
-      gap: 1rem;
-      padding: 0.75rem 1rem;
+      grid-template-columns:
+        auto
+        1fr
+        auto;
+
+      gap: 0.75rem;
+
+      padding:
+        0.75rem
+        1rem;
     }
+
 
     .header__nav--desktop {
       display: none;
     }
 
+
     .header__menu-toggle {
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 0.3rem;
+
       width: 2.5rem;
       height: 2.5rem;
-      padding: 0.5rem;
-      background: transparent;
-      border: 0;
-      border-radius: 0.5rem;
+
+      flex-direction: column;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 0.28rem;
+
+      padding: 0;
+
+      border:
+        1px solid
+        color-mix(
+          in srgb,
+          var(--color-text) 16%,
+          transparent
+        );
+
+      border-radius: 999px;
+
+      background:
+        transparent;
+
+      color:
+        var(--color-text);
+
+      cursor:
+        pointer;
     }
+
 
     .header__menu-toggle span {
       display: block;
-      width: 100%;
-      height: 2px;
-      background: var(--color-text);
+
+      width: 1rem;
+
+      height: 1.5px;
+
       border-radius: 999px;
+
+      background:
+        currentColor;
     }
 
+
     .header__logo {
-      justify-self: start;
+      justify-self: center;
     }
+
 
     .header__icons {
       gap: 0.25rem;
     }
 
+
     .header__icons button,
     .header__icons a {
-      width: 2.25rem;
-      height: 2.25rem;
+      width: 2.35rem;
+      height: 2.35rem;
+
+      background:
+        transparent;
     }
+
+
+    /*
+      Hide account icon on mobile.
+      The account link appears inside the drawer.
+    */
+
+    .header__icons a[aria-label="Account"] {
+      display: none;
+    }
+
 
     .header__nav--drawer:not([hidden]) {
       display: block;
-      grid-column: 1 / -1;
+
+      grid-column:
+        1 / -1;
+
       width: 100%;
-      padding: 1rem 0 0;
-      border-top: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+
+      margin-top:
+        0.5rem;
+
+      padding-top:
+        0.75rem;
+
+      border-top:
+        1px solid
+        color-mix(
+          in srgb,
+          var(--color-text) 12%,
+          transparent
+        );
     }
+
 
     .header__nav--drawer ul {
+      display: flex;
+
       flex-direction: column;
+
       align-items: stretch;
+
       gap: 0;
+
+      margin: 0;
+
+      padding: 0;
     }
+
 
     .header__nav--drawer li {
-      border-bottom: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+      border-bottom:
+        1px solid
+        color-mix(
+          in srgb,
+          var(--color-text) 10%,
+          transparent
+        );
     }
+
 
     .header__nav--drawer a {
-      display: block;
-      padding: 0.9rem 0;
+      display: flex;
+
+      min-height:
+        3.25rem;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      padding:
+        0.9rem
+        0;
+
+      color:
+        var(--color-text);
+
+      font-size:
+        0.9rem;
+
+      font-weight:
+        500;
     }
+
+
+    .header__nav--drawer a::after {
+      position:
+        static;
+
+      width:
+        auto;
+
+      height:
+        auto;
+
+      background:
+        none;
+
+      content:
+        "→";
+
+      transform:
+        none;
+    }
+
   }
+
 {% endstyle %}
 
-<header class="header" data-sticky>
-  <nav class="header__nav header__nav--desktop">
+
+
+<header
+  class="header"
+  data-sticky
+>
+
+  <nav
+    class="header__nav header__nav--desktop"
+  >
+
     <ul class="header__links">
-      <li><a href="/collections/rings">Rings</a></li>
-      <li><a href="/collections/necklaces">Necklaces</a></li>
-      <li><a href="/collections/earrings">Earrings</a></li>
-      <li><a href="/collections/bracelets">Bracelets</a></li>
+
+      <li>
+        <a href="/collections/rings">
+          Rings
+        </a>
+      </li>
+
+      <li>
+        <a href="/collections/necklaces">
+          Necklaces
+        </a>
+      </li>
+
+      <li>
+        <a href="/collections/earrings">
+          Earrings
+        </a>
+      </li>
+
+      <li>
+        <a href="/collections/bracelets">
+          Bracelets
+        </a>
+      </li>
+
     </ul>
+
   </nav>
+
+
 
   <div class="header__logo">
-    <a href="/">{{ shop.name }}</a>
+
+    <a href="/">
+      {{ shop.name }}
+    </a>
+
   </div>
+
+
 
   <div class="header__icons">
-    <button aria-label="Search">🔍</button>
-    <a href="/account" aria-label="Account">👤</a>
-    <button aria-label="Cart" data-cart-toggle onclick="openCartDrawer();">
-  🛒 <span data-cart-count>{{ cart.item_count }}</span>
-</button>
+
+    <button
+      type="button"
+      aria-label="Search"
+    >
+      🔍
+    </button>
+
+
+    <a
+      href="/account"
+      aria-label="Account"
+    >
+      👤
+    </a>
+
+
+    <button
+      type="button"
+      aria-label="Cart"
+      data-cart-toggle
+      onclick="openCartDrawer();"
+    >
+      🛒
+
+      <span data-cart-count>
+        {{ cart.item_count }}
+      </span>
+
+    </button>
+
   </div>
 
-  <button class="header__menu-toggle" aria-label="Menu" aria-expanded="false" data-menu-toggle>
-    <span></span><span></span><span></span>
+
+
+  <button
+    type="button"
+    class="header__menu-toggle"
+    aria-label="Menu"
+    aria-expanded="false"
+    data-menu-toggle
+  >
+    <span></span>
+    <span></span>
+    <span></span>
   </button>
 
-  <nav class="header__nav header__nav--drawer" hidden>
+
+
+  <nav
+    class="header__nav header__nav--drawer"
+    hidden
+  >
+
     <ul>
-      <li><a href="/collections/rings">Rings</a></li>
-      <li><a href="/collections/necklaces">Necklaces</a></li>
-      <li><a href="/collections/earrings">Earrings</a></li>
-      <li><a href="/collections/bracelets">Bracelets</a></li>
+
+      <li>
+        <a href="/collections/rings">
+          Rings
+        </a>
+      </li>
+
+      <li>
+        <a href="/collections/necklaces">
+          Necklaces
+        </a>
+      </li>
+
+      <li>
+        <a href="/collections/earrings">
+          Earrings
+        </a>
+      </li>
+
+      <li>
+        <a href="/collections/bracelets">
+          Bracelets
+        </a>
+      </li>
+
+      <li>
+        <a href="/account">
+          Sign in
+
+          <span aria-hidden="true">
+            →
+          </span>
+
+        </a>
+      </li>
+
     </ul>
+
   </nav>
+
 </header>
 
+
 {% schema %}
+
 {
   "name": "t:general.header",
+
   "settings": [
-    { "type": "image_picker", "id": "logo", "label": "Logo" }
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    }
   ]
+
 }
+
 {% endschema %}

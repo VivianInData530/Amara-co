@@ -6,7 +6,7 @@
 
   <div id="cart-items-container" class="cart-drawer__items">
     {%- for item in cart.items -%}
-      <div class="cart-item" data-cart-item-key="{{ item.key }}">
+      <div class="cart-item" data-cart-item-key="{{ forloop.index }}">
         <a href="{{ item.url }}" class="cart-item__image">
   {% if item.image %}
     <img
@@ -29,11 +29,11 @@
           <p class="cart-item__price">{{ item.price | money }}</p>
         </div>
         <div class="cart-item__qty">
-          <button onclick="updateQuantity('{{ item.key }}', {{ item.quantity }} - 1);">−</button>
+          <button onclick="updateQuantity({{ forloop.index }}, {{ item.quantity }} - 1);">−</button>
           <input type="number" value="{{ item.quantity }}" readonly>
-          <button onclick="updateQuantity('{{ item.key }}', {{ item.quantity }} + 1);">+</button>
+          <button onclick="updateQuantity({{ forloop.index }}, {{ item.quantity }} + 1);">+</button>
         </div>
-        <button class="cart-item__remove" onclick="removeItem('{{ item.key }}');">Remove</button>
+        <button class="cart-item__remove" onclick="removeItem({{ forloop.index }});">Remove</button>
       </div>
     {%- endfor -%}
   </div>
@@ -61,11 +61,7 @@
 {% style %}
   .cart-drawer {
     --cart-line: color-mix(in srgb, var(--color-text) 14%, transparent);
-    --cart-soft: color-mix(
-      in srgb,
-      var(--color-background) 94%,
-      var(--color-text)
-    );
+  
 
     position: fixed;
     inset: 0 0 0 auto;
