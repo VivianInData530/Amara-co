@@ -1,0 +1,16 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "{{ product.title }}",
+  "description": "{{ product.description | strip_html }}",
+  "image": "{{ product.featured_image | image_url: width: 1000 }}",
+  "brand": { "@type": "Brand", "name": "{{ shop.name }}" },
+  "offers": {
+    "@type": "Offer",
+    "price": "{{ product.price | divided_by: 100 }}",
+    "priceCurrency": "{{ shop.currency }}",
+    "availability": "{% if product.available %}InStock{% else %}OutOfStock{% endif %}"
+  }
+}
+</script>

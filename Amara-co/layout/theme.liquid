@@ -2,7 +2,9 @@
 <html lang="{{ request.locale.iso_code }}">
   <head>
     {% # Inlined CSS Variables %}
+     {% render "social-meta" %}
     {% render 'css-variables' %}
+   
 
     {% comment %}
       Font preloading:
@@ -38,6 +40,8 @@
 
     {% render 'cart-drawer' %}
 <script src="{{ 'cart-drawer.js' | asset_url }}" defer></script>
+
+{%render 'json-Id-organization' %}
 
     {{ content_for_footer }}
   </body>

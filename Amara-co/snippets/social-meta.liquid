@@ -1,0 +1,5 @@
+<meta property="og:title" content="{{ page_title }}">
+<meta property="og:description" content="{% if page_description %}{{ page_description }}{% else %}Luxury jewelry by Amara & Co.{% endif %}">
+<meta property="og:image" content="{% if template == 'product' %}{{ product.featured_image | image_url: width: 1200 }}{% else %}{{ shop.brand.square_logo | image_url: width: 1200 }}{% endif %}">
+<meta property="og:url" content="{{ canonical_url }}">
+<meta name="twitter:card" content="summary_large_image">
