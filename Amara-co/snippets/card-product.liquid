@@ -1,154 +1,577 @@
 {% comment %}
-  Renders a product card with image, title, price, and quick-add button.
-  Usage: {% render 'card-product', card_product: product %}
+  Renders a product card with:
+  - Product image
+  - Hover image
+  - Wishlist button
+  - Product title
+  - Price
+  - Quick add to cart
+
+  Usage:
+  {% render 'card-product', card_product: product %}
 {% endcomment %}
 
+
 <div class="card-product">
-  <a href="{{ card_product.url }}" class="card-product__image-link">
-    <div class="card-product__image-container">
-      <img
-        srcset="
-          {{ card_product.featured_image | image_url: width: 200 }} 200w,
-          {{ card_product.featured_image | image_url: width: 400 }} 400w,
-          {{ card_product.featured_image | image_url: width: 600 }} 600w
-        "
-        sizes="(min-width: 1200px) 25vw, (min-width: 750px) 50vw, 100vw"
-        src="{{ card_product.featured_image | image_url: width: 400 }}"
-        alt="{{ card_product.featured_image.alt | escape }}"
-        width="{{ card_product.featured_image.width }}"
-        height="{{ card_product.featured_image.height }}"
-        loading="lazy"
-        class="card-product__image card-product__image--default"
-      >
+
+
+  <div class="card-product__image-container">
+
+
+    <a
+      href="{{ card_product.url }}"
+      class="card-product__image-link"
+    >
+
+      {% if card_product.featured_image %}
+
+        <img
+          srcset="
+            {{ card_product.featured_image | image_url: width: 200 }} 200w,
+            {{ card_product.featured_image | image_url: width: 400 }} 400w,
+            {{ card_product.featured_image | image_url: width: 600 }} 600w
+          "
+
+          sizes="
+            (min-width: 1200px) 25vw,
+            (min-width: 750px) 50vw,
+            100vw
+          "
+
+          src="{{ card_product.featured_image | image_url: width: 400 }}"
+
+          alt="
+            {{ card_product.featured_image.alt
+              | default: card_product.title
+              | escape }}
+          "
+
+          width="{{ card_product.featured_image.width }}"
+          height="{{ card_product.featured_image.height }}"
+
+          loading="lazy"
+
+          class="
+            card-product__image
+            card-product__image--default
+          "
+        >
+
+      {% endif %}
+
+
       {% if card_product.images[1] %}
+
         <img
           src="{{ card_product.images[1] | image_url: width: 400 }}"
-          alt=""
+
+          alt="{{ card_product.title | escape }}"
+
           width="{{ card_product.images[1].width }}"
           height="{{ card_product.images[1].height }}"
+
           loading="lazy"
-          class="card-product__image card-product__image--hover"
+
+          class="
+            card-product__image
+            card-product__image--hover
+          "
         >
+
       {% endif %}
-    </div>
-  </a>
+
+    </a>
+
+
+    <button
+      type="button"
+      class="card-product__wishlist"
+
+      aria-label="
+        Add {{ card_product.title }}
+        to wishlist
+      "
+
+      onclick="
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (
+          window.wishlist &&
+          typeof wishlist.add === 'function'
+        ) {
+          wishlist.add({{ card_product.id }});
+        }
+      "
+    >
+      ♡
+    </button>
+
+
+  </div>
+
+
 
   <div class="card-product__content">
-    <h3 class="card-product__title"><a href="{{ card_product.url }}">{{ card_product.title }}</a></h3>
+
+
+    <h3 class="card-product__title">
+
+      <a href="{{ card_product.url }}">
+        {{ card_product.title }}
+      </a>
+
+    </h3>
+
+
     <div class="card-product__price">
+
       {% if card_product.price_varies %}
-        from {{ card_product.price_min | money }}
+
+        from
+        {{ card_product.price_min | money }}
+
       {% else %}
+
         {{ card_product.price | money }}
+
       {% endif %}
+
     </div>
-    <form method="post" action="/cart/add" class="card-product__form" data-add-to-cart-form>
-      <input type="hidden" name="id" value="{{ card_product.first_available_variant.id }}">
-      <button type="submit" class="card-product__add-to-cart button button--secondary" {% if card_product.available == false %}disabled{% endif %}>
-        {% if card_product.available %}Add to cart{% else %}Sold out{% endif %}
+
+
+
+    <form
+      method="post"
+      action="/cart/add"
+
+      class="card-product__form"
+
+      data-add-to-cart-form
+    >
+
+      <input
+        type="hidden"
+        name="id"
+        value="{{ card_product.first_available_variant.id }}"
+      >
+
+
+      <input
+        type="hidden"
+        name="quantity"
+        value="1"
+      >
+
+
+      <button
+        type="submit"
+
+        class="card-product__add-to-cart"
+
+        {% if card_product.available == false %}
+          disabled
+        {% endif %}
+      >
+
+        {% if card_product.available %}
+          Add to cart
+        {% else %}
+          Sold out
+        {% endif %}
+
       </button>
+
     </form>
+
+
   </div>
+
 </div>
 
+
+
 {% style %}
+
+
+/* =========================================================
+   PRODUCT CARD
+   ========================================================= */
+
+.card-product {
+  display: flex;
+
+  flex-direction: column;
+
+  border-radius: 16px;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.3s ease;
+}
+
+
+.card-product:hover {
+  transform:
+    translateY(-4px);
+}
+
+
+/* =========================================================
+   IMAGE
+   ========================================================= */
+
+.card-product__image-container {
+  position: relative;
+
+  width: 100%;
+
+  aspect-ratio: 1;
+
+  overflow: hidden;
+
+  border-radius: 16px;
+
+  background:
+    var(--color-secondary);
+}
+
+
+.card-product__image-link {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+}
+
+
+.card-product__image {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  transition:
+    transform 0.4s ease,
+    opacity 0.4s ease;
+}
+
+
+.card-product__image--default {
+  position: relative;
+
+  z-index: 1;
+}
+
+
+.card-product__image--hover {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 2;
+
+  opacity: 0;
+}
+
+
+.card-product:hover
+.card-product__image--default {
+  opacity: 0;
+}
+
+
+.card-product:hover
+.card-product__image--hover {
+  opacity: 1;
+
+  transform:
+    scale(1.06);
+}
+
+
+/* =========================================================
+   WISHLIST
+   ========================================================= */
+
+.card-product__wishlist {
+  position: absolute;
+
+  top: 0.75rem;
+  right: 0.75rem;
+
+  z-index: 10;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  padding: 0;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.7);
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 255, 255, 0.9);
+
+  color:
+    var(--color-text);
+
+  cursor: pointer;
+
+  font-size: 1.35rem;
+
+  line-height: 1;
+
+  box-shadow:
+    0
+    4px
+    14px
+    rgba(43, 36, 30, 0.12);
+
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+
+.card-product__wishlist:hover {
+  background:
+    var(--color-primary);
+
+  color:
+    white;
+
+  transform:
+    scale(1.08);
+}
+
+
+.card-product__wishlist:focus-visible {
+  outline:
+    2px solid
+    var(--color-primary);
+
+  outline-offset:
+    3px;
+}
+
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.card-product__content {
+  padding:
+    1rem
+    0
+    0;
+}
+
+
+.card-product__title {
+  margin:
+    0
+    0
+    0.35rem;
+
+  font-family:
+    var(--font-heading);
+
+  font-size:
+    1rem;
+
+  font-weight:
+    400;
+}
+
+
+.card-product__title a {
+  color:
+    var(--color-text);
+
+  text-decoration:
+    none;
+}
+
+
+.card-product__title a:hover {
+  color:
+    var(--color-primary);
+}
+
+
+.card-product__price {
+  color:
+    var(--color-muted);
+
+  font-family:
+    var(--font-body);
+
+  font-size:
+    0.85rem;
+}
+
+
+/* =========================================================
+   ADD TO CART
+   ========================================================= */
+
+.card-product__form {
+  width: 100%;
+}
+
+
+.card-product__add-to-cart {
+  width: 100%;
+
+  margin-top:
+    0.85rem;
+
+  padding:
+    0.7rem
+    1rem;
+
+  border:
+    1px solid
+    var(--color-primary) !important;
+
+  border-radius:
+    100px;
+
+  background:
+    var(--color-primary) !important;
+
+  color:
+    var(
+      --color-primary-foreground,
+      var(--color-bg)
+    ) !important;
+
+  font-family:
+    var(--font-body);
+
+  font-size:
+    0.85rem;
+
+  font-weight:
+    600;
+
+  cursor:
+    pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+
+  appearance:
+    none;
+}
+
+
+.card-product__add-to-cart:hover:not(:disabled) {
+
+  background:
+    color-mix(
+      in srgb,
+      var(--color-primary) 82%,
+      var(--color-text)
+    ) !important;
+
+  color:
+    var(
+      --color-primary-foreground,
+      var(--color-bg)
+    ) !important;
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--color-primary) 82%,
+      var(--color-text)
+    ) !important;
+
+  transform:
+    translateY(-1px);
+}
+
+
+.card-product__add-to-cart:focus-visible {
+
+  outline:
+    2px solid
+    var(--color-primary);
+
+  outline-offset:
+    3px;
+}
+
+
+.card-product__add-to-cart:disabled {
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--color-text) 20%,
+      transparent
+    ) !important;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--color-text) 12%,
+      transparent
+    ) !important;
+
+  color:
+    var(--color-muted) !important;
+
+  opacity:
+    1;
+
+  cursor:
+    not-allowed;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media screen and (max-width: 750px) {
+
   .card-product {
-    display: flex;
-    flex-direction: column;
-    border-radius: 16px;
-    overflow: hidden;
-    transition: transform 0.3s ease;
+    transform: none;
   }
 
   .card-product:hover {
-    transform: translateY(-4px);
+    transform: none;
   }
 
-  .card-product__image-container {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1;
-    overflow: hidden;
-    border-radius: 16px;
-    background-color: var(--color-secondary);
+  .card-product__wishlist {
+    width: 36px;
+    height: 36px;
+
+    top: 0.6rem;
+    right: 0.6rem;
+
+    font-size: 1.2rem;
   }
 
-  .card-product__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease, opacity 0.4s ease;
-  }
+}
 
-  .card-product__image--default {
-    position: relative;
-    z-index: 1;
-  }
 
-  .card-product__image--hover {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    opacity: 0;
-  }
-
-  .card-product:hover .card-product__image--default {
-    opacity: 0;
-  }
-
-  .card-product:hover .card-product__image--hover {
-    opacity: 1;
-    transform: scale(1.06);
-  }
-
-  .card-product__content {
-    padding: 1rem 0 0;
-  }
-
-  .card-product__title {
-    font-family: var(--font-heading);
-    font-weight: 400;
-    font-size: 1rem;
-    margin-bottom: 0.35rem;
-  }
-
-  .card-product__title a {
-    color: var(--color-text);
-    text-decoration: none;
-  }
-
-  .card-product__title a:hover {
-    color: var(--color-primary);
-  }
-
-  .card-product__price {
-    color: var(--color-muted);
-    font-family: var(--font-body);
-    font-size: 0.85rem;
-  }
-
-  .card-product__add-to-cart {
-    width: 100%;
-    margin-top: 0.85rem;
-    padding: 0.65rem 1rem;
-    border-radius: 100px;
-    border: 1px solid var(--color-text);
-    background: transparent;
-    color: var(--color-text);
-    font-family: var(--font-body);
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .card-product__add-to-cart:hover:not(:disabled) {
-    background: var(--color-text);
-    color: var(--color-bg);
-  }
-
-  .card-product__add-to-cart:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
 {% endstyle %}
