@@ -66,6 +66,21 @@
         "collection": "featured-collections"
       }
     },
+    "trust_row_VEiqKh": {
+      "type": "trust-row",
+      "name": "Trust row",
+      "settings": {
+        "icon_1": "✦",
+        "heading_1": "Ethically Sourced",
+        "description_1": "Every stone and metal is traced back to responsibly managed sources.",
+        "icon_2": "✦",
+        "heading_2": "Handcrafted Slowly",
+        "description_2": "Small batches, finished by hand — never rushed, never mass-produced.",
+        "icon_3": "✦",
+        "heading_3": "Made to Last",
+        "description_3": "Complimentary lifetime polishing on every piece you own."
+      }
+    },
     "lifestyle_banner_JdjhEn": {
       "type": "lifestyle-banner",
       "name": "Lifestyle banner",
@@ -83,12 +98,35 @@
         "link_3": "",
         "button_text_3": "Shop gifts"
       }
+    },
+    "upcoming_teaser_UMiGPc": {
+      "type": "upcoming_teaser",
+      "name": "Upcoming teaser",
+      "settings": {
+        "eyebrow": "Coming next season",
+        "heading": "Watches, reimagined in warm metals.",
+        "description": "Be the first to know when the Amara Watch Edit launches. Join the list below.",
+        "button_text": "Notify me",
+        "link": ""
+      }
+    },
+    "newsletter_yMkzDg": {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "settings": {
+        "heading": "Stay close to the studio",
+        "description": "New arrivals, restocks, and quiet studio notes — nothing else.",
+        "button_text": "Sign up"
+      }
     }
   },
   "order": [
     "hero",
     "category_grid_QGxxwW",
     "best_sellers_gRFUmH",
-    "lifestyle_banner_JdjhEn"
+    "trust_row_VEiqKh",
+    "lifestyle_banner_JdjhEn",
+    "upcoming_teaser_UMiGPc",
+    "newsletter_yMkzDg"
   ]
 }
