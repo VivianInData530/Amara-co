@@ -38,7 +38,8 @@
     <script src="{{ 'header.js' | asset_url }}" defer></script>
     <script src="{{ 'carousel.js' | asset_url }}" defer></script>
 
-    {% render 'cart-drawer' %}
+    {% comment %} {% section 'cart-drawer' %} {% endcomment %}
+     {% render 'cart-drawer' %}
 <script src="{{ 'cart-drawer.js' | asset_url }}" defer></script>
 
 {%render 'json-Id-organization' %}

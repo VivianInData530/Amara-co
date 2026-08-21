@@ -29,11 +29,11 @@
           <p class="cart-item__price">{{ item.price | money }}</p>
         </div>
         <div class="cart-item__qty">
-          <button onclick="updateQuantity({{ forloop.index }}, {{ item.quantity }} - 1);">−</button>
-          <input type="number" value="{{ item.quantity }}" readonly>
-          <button onclick="updateQuantity({{ forloop.index }}, {{ item.quantity }} + 1);">+</button>
+         <button type="button" onclick="updateQuantity('{{ item.key }}', {{ item.quantity }} - 1);">−</button>
+<input type="number" value="{{ item.quantity }}" readonly>
+<button type="button" onclick="updateQuantity('{{ item.key }}', {{ item.quantity }} + 1);">+</button>
         </div>
-        <button class="cart-item__remove" onclick="removeItem({{ forloop.index }});">Remove</button>
+        <button type="button" class="cart-item__remove" onclick="removeItem('{{ item.key }}');">Remove</button>
       </div>
     {%- endfor -%}
   </div>
@@ -78,8 +78,8 @@
       var(--color-text) 18%,
       transparent
     );
-    transform: translateX(100%);
-    transition: transform 320ms cubic-bezier(.22, 1, .36, 1);
+    /* transform: translateX(100%);
+    transition: transform 320ms cubic-bezier(.22, 1, .36, 1); */
   }
 
   .cart-drawer.active {
@@ -394,3 +394,5 @@
     }
   }
 {% endstyle %}
+
+
